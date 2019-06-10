@@ -1,0 +1,7 @@
+{
+  "/img/collect_onput.png":"/img/collect.png",
+  "/img/collect.png":"/img/collect_onput.png",
+
+  "/img/upgood.png":"/img/upgood_onput.png",
+  "/img/upgood_onput.png":"/img/upgood.png"
+}

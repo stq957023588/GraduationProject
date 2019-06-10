@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css//ContinentSelect.css}"/>
+<style>
+    .on-put{
+        cursor: pointer;
+    }
+
+</style>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="https://v3.bootcss.com/examples/starter-template/#">Project name</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="https://v3.bootcss.com/examples/starter-template/#">Home</a></li>
+                    <li><a href="https://v3.bootcss.com/examples/starter-template/#about">About</a></li>
+                    <li><a href="https://v3.bootcss.com/examples/starter-template/#contact">Contact</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right nav-pills" >
+                    <li th:if="${session.user}==null">
+                        <a href="registerEnter">
+                            <span class="glyphicon glyphicon-user"></span>
+                            注册
+                        </a>
+                    </li>
+                    <li th:if="${session.user}==null">
+                        <a href="loginEnter">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                            登录
+                        </a>
+                    </li>
+                    <li th:if="${session.user}!=null" class="dropdown">
+                        <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getAccount()}"></a>
+
+                        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Java</a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li th:if="${session.user}!=null">
+                        <a href="javascript:void(0)">
+                            消息
+                            <span class="badge pull-right">42</span>
+                        </a>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container" id="container" style="margin-top: 100px">
+
+        <div class="row">
+            <div id="Asia" class="col-md-4 col-md-offset-1 text-center on-put">
+                <img th:src="@{/img/1.png}" class="img-responsive img-thumbnail">
+                <h2 class="page-footer">Asia</h2>
+            </div>
+            <div id="Europe" class="col-md-4 col-md-offset-2 text-center on-put">
+                <img th:src="@{/img/1.png}" class="img-responsive img-thumbnail">
+                <h2 class="page-footer">Europe</h2>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"/>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"/>
+<script type="text/javascript">
+    $("#Asia").click(function () {
+        document.location.href=""
+    })
+
+
+</script>
+</html>

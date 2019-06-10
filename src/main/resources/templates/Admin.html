@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<style>
+    .a-strategy-admin{
+        height: 50px;
+        background-color: whitesmoke;
+        border-radius: 5px;
+        line-height: 50px;
+    }
+</style>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home" style="font-size: 20px">Home</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <!--<li class="active"><a href="javascript:void(0)">Show Your Strategy</a></li>-->
+                <li><a href="/StrategyWrite">Show Your Strategy</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right nav-pills" >
+                <li th:if="${session.user}==null">
+                    <a href="registerEnter">
+                        <span class="glyphicon glyphicon-user"></span>
+                        Register
+                    </a>
+                </li>
+                <li th:if="${session.user}==null">
+                    <a href="loginEnter">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        Login
+                    </a>
+                </li>
+                <li th:if="${session.user}!=null" class="dropdown">
+                    <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getName()}"></a>
+
+                    <input id="hiddenAccount" type="hidden" th:value="${session.user.getAccount()}">
+                    <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" th:href="@{'/personalPage?pageName=个人资料&account='+${session.user.getAccount()}}">个人中心</a>
+                            <a role="menuitem" tabindex="-1" th:href="@{/Admin}" id="admin" th:if="${session.user.getIsSysAdmin()==1}">管理员</a>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0)" id="loginOut">退出登陆</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li th:if="${session.user}!=null" class="dropdown">
+                    <a id="AdminDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">攻略管理</a>
+
+                    <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" th:href="@{/Admin}">攻略管理</a>
+                            <a role="menuitem" tabindex="-1" th:href="@{/AdminCity}">城市管理</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li th:if="${session.user}!=null">
+                    <a href="/Chat">
+                        消息
+                        <span id="msgNum" class="badge pull-right"></span>
+                    </a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container" style="margin-top: 100px">
+    <div class="row ">
+        <div id="artilces" class="col-md-8 col-md-offset-2"></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    //--------------------------init--------------------
+    getAuditStrategies();
+
+    //-------------------------------方法
+    function getAuditStrategies(){
+        $.ajax({
+            type:'post',
+            url:'getAuditStrategies',
+            dataType:'json',
+            success:function (data) {
+                if(data.data.length<=0){
+                    var html=$("<div class=\"row\"><div class=\"row col-md-8 col-md-offset-2 white all-center\" style=\"padding: 0;height: 50px;border-radius: 5px;\">没有需要审核的..</div></div>")
+                    html.appendTo($("#artilces"))
+                }else{
+                    addStrategyElements_admin(data.data)
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+    function addStrategyElements_admin(data){
+        $.each(data,function (i,n) {
+            addOneElement_admin(i,n);
+        })
+    }
+
+
+    function addOneElement_admin(i,n){
+        var row=$("<div class=\"row \" style='margin-top: 10px'></div>")
+
+        var aStrategyAdmin=$("<div class=\"row col-md-8 col-md-offset-2 a-strategy-admin \" style=\"padding: 0\"></div>")
+        var title=$("<div class=\"col-md-7 text-left on-put\"></div>")
+        title.html(n.title);
+        title.click(function (){
+
+
+            window.location.href="/showStrategyInfo?strategyId="+n.id+"&browser="+getBrowserInfo();
+        })
+        title.appendTo(aStrategyAdmin)
+
+        var ban=$("<button type=\"button\" id=\"BanBtn\" class=\"col-md-2 btn btn-info\" style=\"margin: 0;margin-top: 8px;width: 100px\">Ban</button>")
+        ban.click(function (){
+            BanOrPass(n.id,-1)
+        })
+        ban.appendTo(aStrategyAdmin)
+        var pass=$("<button type=\"button\" id=\"PassBtn\" class=\"col-md-2 btn btn-info\" style=\"margin: 0;margin-top: 8px;margin-left:15px;width: 100px\">Pass</button>")
+        pass.click(function (){
+            BanOrPass(n.id,1)
+        })
+        pass.appendTo(aStrategyAdmin)
+        aStrategyAdmin.appendTo(row)
+
+        row.appendTo($("#artilces"))
+
+        function BanOrPass(id,o){
+            $.ajax({
+                type:'post',
+                url:'BanOrPass',
+                data:{
+                    id:id,
+                    o:o
+                },
+                dataType:'json',
+                success:function (data) {
+                    row.remove();
+                },
+                error:function (e) {
+                    console.log(e);
+                }
+            })
+        }
+    };
+    
+
+
+
+</script>
+
+</html>

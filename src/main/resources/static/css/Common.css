@@ -1,0 +1,222 @@
+body{
+    background:url("/img/blue_b.jpg") ;
+    background-size: 100%;
+}
+
+.container{
+    width: 1280px;
+}
+.mtop50{
+    margin-top: 50px;
+}
+
+
+.tipMsg{
+    padding: 0;
+    padding-top: 3px;
+    color: red;
+}
+
+
+.nav-r-m{
+    height: 50px;
+    font-size: 15px;
+    color: grey;
+}
+.nav-r-m:hover{
+    color: black;
+}
+
+.borderR5{
+    border-radius: 5px;
+}
+borderRM{
+    border-radius: 100%;
+}
+
+.a-strategy{
+    border-radius: 5px;
+    background-color: whitesmoke;
+    padding: 20px 25px;
+    margin-top: 10px;
+}
+
+.wordAfter{
+    color:grey;
+    font-size: 12px;
+    padding-right: 25px;
+}
+
+.putChange:hover{
+    color: skyblue;
+}
+
+.PageBtn{
+    height: 35px;
+}
+.PageBtn:hover{
+    color: skyblue;
+}
+.pageNumBtn:hover{
+    color: skyblue;
+}
+.userName{
+    font-size: 18px;
+    color: grey;
+}
+
+
+.mtop25{
+    margin-top: 25px
+}
+
+.mleft15{
+    margin-left: 15px;
+}
+.mtop10{
+    margin-top: 10px
+}
+.pleft15{
+    padding-left: 15px
+}
+.pright50{
+    padding-right: 50px;
+}
+.ptop5{
+    padding-top: 5px;
+}
+
+.on-put{
+    cursor: pointer;
+}
+.on-color{
+    background-color: #2e6da4;
+}
+.all-center{
+    display: flex;
+    justify-content:center;
+    align-items:Center;
+    text-align: center;
+}
+
+.Sink{
+    position: relative;
+    top: 1px;
+}
+
+.userInfo{
+    background-color: whitesmoke;
+    border-radius: 5px;
+    padding: 20px 25px ;
+    height: 168px;
+}
+
+.blankDiv{
+    background-color: whitesmoke;
+    border-radius: 5px;
+    height: 100px;
+    font-size: 25px;
+}
+
+.nav-2{
+    padding: 0;
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
+
+.headPicCss{
+    border-radius: 100%;
+    height: 64px;
+    width: 64px;
+}
+.headPicCss-b{
+    border-radius: 100%;
+    height: 128px;
+    width: 128px;
+}
+
+.on-hide{
+    display: none;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.grey1{
+    background-color: rgb(229, 233, 239);;
+}
+
+
+.whitesmoke{
+    background-color: whitesmoke;
+}
+
+.green{
+    background-color: green;
+}
+.grey{
+    background-color: grey;
+}
+.yellow{
+    background-color: yellow;
+}
+.yGreen{
+    background-color: yellowgreen;
+}
+.gold{
+    background-color: gold;
+}
+.dGold{
+    background-color: darkgoldenrod;
+}
+.purple{
+    background-color: purple;
+}
+.skyBlue{
+    background-color: skyblue;
+}
+.mPurple{
+    background-color: mediumpurple;
+}
+
+.bgc-1{
+    background-color: rgba(50, 60, 123, 0.1);
+}
+.white{
+    background-color: white;
+}
+.black{
+    background-color: black;
+}
+
+.w-blue{
+    color: blue;
+}
+.w-yellow{
+    color: #fff124;
+}
+.w-grey{
+    color: grey;
+}
+
+.select-center{
+    width: 150px;
+    text-align: center;
+    margin: 20px 59px;
+}
+.input-group-addon>img{
+    width: 20px;
+}
+
+.modal-body{
+    overflow: auto;
+}
+
+.font-add{
+    font-weight: 500;
+}
+
+.position-fixed{
+    position: fixed;
+}

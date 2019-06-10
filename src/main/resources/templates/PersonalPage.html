@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<link rel="stylesheet" th:href="@{/plus/layui/css/layui.css}" media="all">
+<link rel="stylesheet" th:href="@{/plus/ImgCropping/css/cropper.min.css}">
+<link rel="stylesheet" th:href="@{/plus/ImgCropping/css/ImgCropping.css}">
+<style>
+    #topBg{
+        background: url("/img/personnalPage1.png@100Q.webp");
+        /*background-color: #31708f;*/
+        width: 1280px;
+        height: 200px;
+        padding-top: 116px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    #personPageNav{
+        height: 66px;
+        float: left;
+    }
+    .personPageNavBtn{
+        height: 66px;
+        /*width: 50px;*/
+        margin-right: 30px;
+        display: inline-block;
+        font-family: 幼圆;
+        font-weight: 600;
+    }
+    .personPageNavBtn:hover{
+        background-color: skyblue !important;
+        color: skyblue !important;
+    }
+    /*#personalInfo{*/
+        /*background-color: skyblue ;*/
+        /*color: skyblue ;*/
+    /*}*/
+
+    .personPageNavBtn>div{
+        height: 64px;
+        background-color: white;
+    }
+    .fanRelated{
+        height: 66px;
+        width: 58px;
+        float: right;
+        padding: 10px 0px;
+        font-weight: 500;
+
+    }
+    .fanRelated>div{
+        font-family: 幼圆;
+        display: flex;
+        justify-content:center;
+        align-items:Center;
+        text-align: center;
+        font-size: 12px;
+    }
+    .fanRelated:hover{
+        color: skyblue;
+    }
+
+    #s-info{
+        width: 1260px;
+        height: 84px;
+        margin-left: 20px;
+        padding-bottom: 16px;
+
+    }
+    #headPic{
+        width: 68px;
+        height: 68px;
+        border-radius: 100%;
+        float: left;
+        border: 2px solid grey;
+    }
+    #userName{
+        height: 68px;
+        width: 735px;
+        line-height: 68px;
+        padding-left: 93px;
+        font-family: 华文行楷;
+        font-size: 30px;
+        color: whitesmoke;
+    }
+    .infoDiv{
+        margin: 15px 0;
+        font-size: 18px;
+    }
+    .safeContent{
+        margin: 15px 0;
+        font-size: 18px;
+    }
+    #name,#birthday{
+        width: 200px;
+        display: inline-block;
+        background-color: white;
+    }
+    .sexBtn{
+        font-size: 16px;
+        background-color: rgba(77, 124, 128, 0.17);
+        border: 1px rgba(0, 0, 0, 0.42) solid;
+        border-radius: 5px;
+        padding: 3px 5px;
+        margin-right: 20px;
+    }
+    .personal4Page{
+        padding: 20px 0;
+        display: none;
+    }
+    .btnDiv{
+        width: 100px;
+        display: inline-block;
+        margin-right: 30px;
+    }
+
+</style>
+<body style="background-color: whitesmoke">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home" style="font-size: 20px">Home</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <!--<li class="active"><a href="javascript:void(0)">Show Your Strategy</a></li>-->
+                <li><a href="/StrategyWrite">Show Your Strategy</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right nav-pills" >
+                <li th:if="${session.user}==null">
+                    <a href="registerEnter">
+                        <span class="glyphicon glyphicon-user"></span>
+                        Register
+                    </a>
+                </li>
+                <li th:if="${session.user}==null">
+                    <a href="/loginEnter">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        Login
+                    </a>
+                </li>
+                <li th:if="${session.user}!=null" >
+                    <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getName()}"></a>
+                    <input id="hiddenAccount" type="hidden" th:value="${session.user.getAccount()}">
+                    <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" th:href="@{'/personalPage?pageName=个人资料&account='+${session.user.getAccount()}}">个人中心</a>
+                            <a role="menuitem" tabindex="-1" th:href="@{/Admin}" id="admin" th:if="${session.user.getIsSysAdmin()==1}">管理员</a>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0)" id="loginOut">退出登陆</a>
+                        </li>
+                    </ul>
+                </li>
+                <li th:if="${session.user}!=null" id="msgBtn">
+                    <a href="/Chat">
+                        消息
+                        <span id="msgNum" class="badge pull-right"></span>
+                    </a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container" style="margin-top: 50px">
+    <!--<div class="row">-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+    <!--</div>-->
+    <div class="row">
+        <div id="topBg" class="col-md-12">
+            <div id="s-info">
+                <img id="headPic" class="on-put" src="/img/ymc_.jpg">
+                <div id="userName" th:text="${user.getUser().getName()}">
+                    ????
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row white" style="padding: 0px 20px;border-bottom-left-radius: 10px;border-bottom-right-radius:10px ">
+        <div id="personPageNav" class="col-md-7 white">
+            <div id="personalInfo" class="personPageNavBtn on-put ">
+                <div class="all-center">个人资料</div>
+            </div>
+            <!--<div id="dynamicPageBtn" class="personPageNavBtn on-put ">-->
+                <!--<div class="all-center">动态</div>-->
+            <!--</div>-->
+            <div id="collectPageBtn" class="personPageNavBtn on-put ">
+                <div class="all-center">收藏</div>
+            </div>
+            <div id="myStrategyPageBtn" class="personPageNavBtn on-put">
+                <div class="all-center">投稿</div>
+            </div>
+            <div id="accountSafePageBtn" class="personPageNavBtn on-put">
+                <div class="all-center">安全</div>
+            </div>
+        </div>
+
+        <div id="showConcern" class="fanRelated on-put">
+            <div>
+                关注数
+            </div>
+            <div id="concernNum" style="margin-top: 10px">
+                1
+            </div>
+        </div>
+        <div id="showFans" class="fanRelated on-put">
+            <div>
+                粉丝
+            </div>
+            <div id="fansNum" style="margin-top: 10px">
+                1
+            </div>
+        </div>
+
+    </div>
+
+    <div id="personlInfoPage" class="row white personal4Page" style="margin-top: 10px; border-radius: 10px">
+        <div class="col-md-6 col-md-offset-3 " style="padding: 15px 50px">
+            <div class="infoDiv">
+                <span class="pright50">账&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号:</span>
+                <span th:text="${user.getUser().getAccount()}">???</span>
+            </div>
+            <div class="infoDiv">
+                <span class="pright50">昵&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp称:</span>
+                <input th:value="${user.getUser().getName()}" type="text" id="name" name="name" class="form-control  " placeholder="你的昵称">
+            </div>
+            <div class="infoDiv">
+                <span class="pright50">性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别:</span>
+                <span id="manBtn" class="sexBtn on-put">男</span>
+                <span id="womanBtn" class="sexBtn on-put">女</span>
+                <span id="secretBtn" class="sexBtn on-put">保密</span>
+            </div>
+            <div class="infoDiv wui-area">
+                <span class="pright50">生&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日:</span>
+                <input id="birthday" th:value="${user.getBirthdayStr()}"  class="form-control"  placeholder="选择日期" readonly>
+            </div>
+            <div class="infoDiv">
+                <span class="pright50">注册日期:</span>
+                <span th:text="${user.getRegisteredTimeStr()}">?????</span>
+            </div>
+            <div style="width: 70px;margin-left: 126.6px">
+                <button id="saveBtn"  type="button" class="btn btn-default" style="width: 100%">保存</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="accountSafePage" class="row white personal4Page" style="margin-top: 10px; border-radius: 10px">
+        <div class="col-md-6 col-md-offset-3" style="padding: 15px 50px">
+            <div th:if="${user.getUser().getProblem()}==null" class="safeContent">
+                <span>密保问题:</span>
+                <span class="btnDiv">
+                    <button id="setProblemBtn"  type="button" class="btn btn-default" style="width: 100%">设置密保</button>
+                </span>
+            </div>
+            <div th:if="${user.getUser().getProblem()}!=null" class="safeContent">
+                <span>密保问题:</span>
+                <span th:text="${user.user.getProblem()}">!!!!!!!!!!!!!!!</span>
+            </div>
+
+            <div class="btnDiv" th:if="${user.getUser().getProblem()}!=null">
+                <button id="changePasswordBtn"  type="button" class="btn btn-default" style="width: 100%">修改密码</button>
+            </div>
+            <div class="btnDiv" th:if="${user.getUser().getProblem()}!=null">
+                <button id="changeProblemBtn"  type="button" class="btn btn-default" style="width: 100%">修改密保</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dynamicPage" class="row white personal4Page" style="margin-top: 10px; border-radius: 10px">
+        dynamicPage
+    </div>
+
+    <div id="collectPage" class="row white personal4Page" style="margin-top: 10px; border-radius: 10px;">
+        <div id="artilces" class="col-md-8 col-md-offset-2"></div>
+    </div>
+
+    <div id="myStrategiesPage" class="row white personal4Page" style="margin-top: 10px; border-radius: 10px">
+        <div id="myStrategies" class="col-md-8 col-md-offset-2"></div>
+    </div>
+
+    <div id="showUserInfoPage" class="row white personal4Page" style="margin-top: 10px; border-radius: 10px">
+        <div id="users" class="col-md-8 col-md-offset-2"></div>
+    </div>
+
+</div>
+<div style="display: none" class="tailoring-container">
+    <div class="black-cloth" onclick="closeTailor(this)"></div>
+    <div class="tailoring-content">
+        <div class="tailoring-content-one">
+            <label title="上传图片" for="chooseImg" class="l-btn choose-btn">
+                <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden" onchange="selectImg(this)">
+                选择图片
+            </label>
+            <div class="close-tailoring"  onclick="closeTailor(this)">×</div>
+        </div>
+        <div class="tailoring-content-two">
+            <div class="tailoring-box-parcel">
+                <img id="tailoringImg">
+            </div>
+            <div class="preview-box-parcel">
+                <p>图片预览：</p>
+                <div class="square previewImg"></div>
+                <div class="circular previewImg"></div>
+            </div>
+        </div>
+        <div class="tailoring-content-three">
+            <button class="l-btn cropper-reset-btn">复位</button>
+            <button class="l-btn cropper-rotate-btn">旋转</button>
+            <button class="l-btn cropper-scaleX-btn">换向</button>
+            <button class="l-btn sureCut" id="sureCut">确定</button>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/ImgPreview.js}"></script>
+<script type="text/javascript" th:src="@{/plus/ImgCropping/js/cropper.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+<script type="text/javascript" th:src="@{/js/websocketConnect.js}"></script>
+<script type="text/javascript">
+    if($("#infoDropdown").length>0){
+        //websocket 启动
+        var websocket=websocketConnect($("#hiddenAccount").val());
+        //websocket 接收到消息后的回调方法
+        websocket.onmessage=function (ev) {
+            console.log(ev);
+            if($("#msgNum").html()=="" || $("#msgNum").html()==null){
+                $("#msgNum").html(1);
+            }else{
+                var oldMsgNum=parseInt($("#msgNum").html());
+                $("#msgNum").html(oldMsgNum+1);
+            }
+        }
+
+        loadUnreadMsgNum($("#hiddenAccount").val());
+    }
+</script>
+
+<script type="text/javascript">
+    //插件加载
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#birthday' //指定元素
+        });
+    });
+</script>
+<script type="text/javascript" th:inline="javascript">
+    //全局变量
+    var sex;
+    var pageName="个人资料";
+
+    //function 方法
+    //加载用户头像
+    var account=[[${user.getUser().getAccount()}]]
+    function loadHeadPic(){
+        $.ajax({
+            type:'get',
+            url:'headPicCheck',
+            data:{
+                account:account
+            },
+            success:function (data) {
+                var img="/img/z_add.png";
+                if(data){
+                    loadHeadPicAjax(account,"#headPic");
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+
+    //加载粉丝数
+    function loadFansNum(){
+        $.ajax({
+            type:'post',
+            url:'getFansNum',
+            data:{
+                account:account
+            },
+            dataType:'json',
+            success:function (data) {
+                $("#fansNum").html(data.data)
+                // console.log(data);
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+
+    //加载关注数
+    function loadConcernNum(){
+        $.ajax({
+            type:'post',
+            url:'getConcernsNum',
+            data:{
+                account:account
+            },
+            dataType:'json',
+            success:function (data) {
+                // console.log(data);
+                $("#concernNum").html(data.data);
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+
+    //加载性别
+    function loadSex(){
+        $.ajax({
+            type:'post',
+            url:'getUserInfoByAccount',
+            data:{
+                account:account
+            },
+            dataType:'json',
+            success:function (data) {
+                if(data.data.user.sex=="男"){
+                    changeSexCss("#manBtn")
+                    sex="男";
+                }else if(data.data.user.sex=="女"){
+                    changeSexCss("#womanBtn");
+                    sex="女";
+                }else{
+                    changeSexCss("#secretBtn");
+                    sex="保密";
+                }
+                // console.log(data);
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+    
+    //改变性别样式
+    function changeSexCss(id){
+        $(id).css({
+            backgroundColor:"skyblue",
+            color:"white",
+            border:"unset",
+            padding: "4px 6px"
+        })
+    }
+    
+    //保存信息
+    function saveInfo(){
+        $.ajax({
+            type:'post',
+            url:'saveInfo',
+            data:{
+                account:account,
+                name:$("#name").val(),
+                sex:sex,
+                birthdayStr:$("#birthday").val()
+            },
+            dataType:'json',
+            success:function (data) {
+                layer.msg("保存成功",function (){
+                    window.location.reload();
+                })
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+
+    //初始页面
+    function setInitPage(){
+        pageName=[[${pageName}]];
+        $(getJsonArray("json/change.json",pageName)).show();
+        if(pageName=="个人资料"){
+            $("#personalInfo").css({
+                backgroundColor:"skyblue",
+                color:"skyblue"
+            })
+        }else if(pageName=="动态"){
+            $("#dynamicPageBtn").css({
+                backgroundColor:"skyblue",
+                color:"skyblue"
+            })
+        }else if(pageName=="收藏"){
+            $("#collectPageBtn").css({
+                backgroundColor:"skyblue",
+                color:"skyblue"
+            })
+        }else if(pageName=="投稿"){
+            $("#myStrategyPageBtn").css({
+                backgroundColor:"skyblue",
+                color:"skyblue"
+            })
+        }else if(pageName=="安全"){
+            $("#accountSafePageBtn").css({
+                backgroundColor:"skyblue",
+                color:"skyblue"
+            })
+        }
+
+    }
+
+  //加载收藏页面
+    function loadCollectPage(){
+        $.ajax({
+            type:'post',
+            url:'getCollectedStrategies',
+            data:{
+                userId:[[${user.getUser().getId()}]]
+            },
+            dataType:'json',
+            success:function (data) {
+                if(data.data!=null){
+                    $.each(data.data,function (i,n){
+                        addOneElement(i,n);
+                    })
+                }else{
+                    $("#artilces").addClass("text-center");
+                    $("#artilces").css({
+                        "fontSize":"20px"
+                    })
+                    $("#artilces").html("没有收藏");
+                }
+
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+    
+    //加载我的投稿
+    function loadMyStrategies(){
+        $.ajax({
+            type:'post',
+            url:'findStrategiesByAccount',
+            data:{
+                account:account
+            },
+            dataType:'json',
+            success:function (data) {
+                // console.log(data);
+
+                if(data.data.length>0){
+                    $.each(data.data,function (i,n){
+                        addOneElement(i,n,{
+                            contianerId:"#myStrategies"
+                        });
+                    })
+                }else{
+                    $("#myStrategies").addClass("text-center");
+                    $("#myStrategies").css({
+                        "fontSize":"20px"
+                    })
+                    $("#myStrategies").html("快去投稿.....")
+                }
+
+
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+
+    //加载我的粉丝或我的关注
+    function loadUsers(){
+        var url;
+        if(pageName=="我的关注"){
+            url="getConcernsInfo";
+        }else if(pageName="我的粉丝"){
+            url="getFansInfo";
+        }
+        loadUserAjax(url);
+    }
+    
+    function loadUserAjax(url){
+        $.ajax({
+            type:'post',
+            url:url,
+            data:{
+                account:account,
+                page:0,
+                size:5
+            },
+            dataType:'json',
+            success:function (data) {
+                // console.log(data);
+                if(data.data.length<=0){
+                    var html=$("<div class='userInfo mtop10 row all-center'>这里什么都没有哦</div>")
+                    html.css("backgroundColor","white");
+                    html.css("fontSize","25px")
+                    html.appendTo($("#users"))
+                }else{
+                    addUserElements(data.data);
+                }
+
+            },
+            error:function (e) {
+                window.location.href="/error";
+            }
+        })
+    }
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    //------------------------初始化加载---------------------------------
+    loadHeadPic();
+    loadFansNum();
+    loadConcernNum();
+    loadSex();
+    setInitPage();
+    loadCollectPage();
+    loadMyStrategies();
+    loadUsers();
+    //-------------------------------按键功能--------------------
+
+    $(".sexBtn").click(function(){
+        $(".sexBtn").css({
+            backgroundColor:"rgba(77, 124, 128, 0.17)",
+            color:"black",
+            border:"1px rgba(0, 0, 0, 0.42) solid",
+            padding: "3px 5px"
+        });
+        changeSexCss("#"+this.id);
+        sex=getJsonArray("json/sex.json",this.id);
+    })
+
+    $("#saveBtn").click(function(){
+        // console.log($("#name").val())
+        if($("#name").val().trim()==""||$("#name").val()==null){
+            layer.msg("名称不能为空")
+            return ;
+        }
+        saveInfo();
+    })
+
+    $("#showFans").click(function(){
+        window.location.href="/personalPage?pageName=我的粉丝"+"&account="+account;
+    });
+    
+    $("#showConcern").click(function(){
+        window.location.href="/personalPage?pageName=我的关注"+"&account="+account;
+    })
+
+
+    $(".personPageNavBtn").click(function(){
+        $(".personPageNavBtn").css({
+            backgroundColor:"white",
+            color:"black"
+        })
+        this.style.backgroundColor="skyblue";
+        this.style.color="skyblue";
+        $(".personal4Page").hide();
+        window.location.href="/personalPage?pageName="+this.childNodes[1].innerHTML+"&account="+account;
+        // $(getJsonArray("json/change.json",this.childNodes[1].innerHTML)).show();
+    })
+    
+    $("#changePasswordBtn").click(function(){
+        window.location.href="ForgetPassword?account="+account;
+    })
+    $("#changeProblemBtn").click(function(){
+        window.location.href="ChangeProblem?account="+account;
+    })
+    $("#setProblemBtn").click(function(){
+        window.location.href="ChangeProblem?account="+account;
+    })
+
+</script>
+<script type="text/javascript" th:src="@{/js/CutImg.js}"></script>
+</html>

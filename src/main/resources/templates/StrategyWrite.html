@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/home" style="font-size: 20px">Home</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!--<li class="active"><a href="javascript:void(0)">Show Your Strategy</a></li>-->
+                    <li><a href="/StrategyWrite">Show Your Strategy</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right nav-pills" >
+                    <li th:if="${session.user}==null">
+                        <a href="registerEnter">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Register
+                        </a>
+                    </li>
+                    <li th:if="${session.user}==null">
+                        <a href="loginEnter">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                            Login
+                        </a>
+                    </li>
+                    <li th:if="${session.user}!=null" class="dropdown">
+                        <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getName()}"></a>
+                        <input id="hiddenAccount" type="hidden" th:value="${session.user.getAccount()}">
+                        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" th:href="@{'/personalPage?pageName=个人资料&account='+${session.user.getAccount()}}">个人中心</a>
+                                <a role="menuitem" tabindex="-1" th:href="@{/Admin}" id="admin" th:if="${session.user.getIsSysAdmin()==1}">管理员</a>
+                                <a role="menuitem" tabindex="-1" href="javascript:void(0)" id="loginOut">退出登陆</a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li th:if="${session.user}!=null">
+                        <a href="/Chat">
+                            消息
+                            <span id="msgNum" class="badge pull-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container" style="margin-top: 50px">
+
+        <div class="row">
+            <h1 class="col-md-6">Write an Article</h1>
+        </div>
+
+        <div class="row">
+            <h5 class="col-md-12">Share your experience Or Make a strategy after your Tourism</h5>
+        </div>
+
+        <div class="row">
+            <div class="input-group col-md-3" style="margin: 15px">
+                <span class="input-group-addon">Title</span>
+                <input id="title" type="text" class="form-control" placeholder="Now give a title to it">
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="editor" class="col-md-12"></div>
+        </div>
+        <div class="row">
+            <button id="subBtn" type="button" class="btn btn-primary col-md-2 mtop25 mleft15" >
+                Submit
+            </button>
+            <button id="resetBtn" type="button" class="btn btn-default col-md-2 mtop25 mleft15" >
+                Reset
+            </button>
+        </div>
+    </div>
+
+
+    <div class="modal fade bs-example-modal-sm" id="attractionSelectModal" tabindex="-1" role="dialog" aria-labelledby="attractionSelectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Article Infomation</h4>
+                </div>
+                <div id="attractionSelectModalBody" class="modal-body" style="height: 350px">
+                    <select id="continentSelectLabel" class="select-center">
+                        <option value="0" selected>-- Select Continent --</option>
+                    </select>
+                    <select id="countrySelectLabel" class="select-center">
+                        <option value="0" selected>-- Select Country --</option>
+                    </select>
+                    <select id="provinceSelectLabel" class="select-center">
+                        <option value="0" selected>-- Select Province --</option>
+                    </select>
+                    <select id="citySelectLabel" class="select-center" style="margin-bottom: 40px">
+                        <option value="0" selected>-- Select City --</option>
+                    </select>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <img th:src="@{/img/attractions.png}" >
+                        </span>
+                        <input id="viewName" type="text" class="form-control" placeholder="Ever go a view?Write down it">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="ConfirmBtn">Confirm</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+
+
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/wangEditor.js}"></script>
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+<script type="text/javascript" th:src="@{/js/websocketConnect.js}"></script>
+<script type="text/javascript">
+    if($("#infoDropdown").length>0){
+        //websocket 启动
+        var websocket=websocketConnect($("#hiddenAccount").val());
+        //websocket 接收到消息后的回调方法
+        websocket.onmessage=function (ev) {
+            console.log(ev);
+            if($("#msgNum").html()=="" || $("#msgNum").html()==null){
+                $("#msgNum").html(1);
+            }else{
+                var oldMsgNum=parseInt($("#msgNum").html());
+                $("#msgNum").html(oldMsgNum+1);
+            }
+        }
+        loadUnreadMsgNum($("#hiddenAccount").val());
+    }
+</script>
+<script type="text/javascript">
+    var E=window.wangEditor;
+    var editor=new E('#editor');
+    editor.customConfig.showLinkImg = false;
+    editor.customConfig.uploadFileName = 'file';
+    editor.customConfig.uploadImgServer = '/picLocalization';
+    editor.customConfig.debug = true
+    editor.customConfig.zIndex = 100;
+    editor.customConfig.uploadImgHooks={
+        fial:function (xhr, editor, result) {
+            console.log(result);
+        },
+        error: function (xhr, editor) {
+            console.log("error");
+        },
+    }
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        console.log(editor.txt.html());
+        console.log(editor.txt.text())
+    }
+    editor.create();
+</script>
+<script type="text/javascript">
+
+    $("#subBtn").click(function () {
+        if($("#title").val()==null || $("#title").val()==""){
+            alert("title can not be null");
+            return;
+        }
+        $('#attractionSelectModal').modal('show');
+    })
+    $("#resetBtn").click(function (){
+        $("#title").val("");
+        editor.txt.html("");
+    })
+
+
+
+    appendWhatToWhere({
+        where:"#continentSelectLabel",
+        what:{
+            label:"<option></option>",
+            content:getJsonArray("json/continent.json","continent")
+        }
+    });
+    $("#continentSelectLabel").change(function () {
+        $("#countrySelectLabel").empty();
+        $("#countrySelectLabel").html("<option value=\"0\" selected>-- Select Country --</option>")
+        appendWhatToWhere({
+            where:"#countrySelectLabel",
+            what:{
+                label:"<option></option>",
+                content:getJsonArray("json/country.json",this.value)
+            }
+        })
+    });
+    $("#countrySelectLabel").change(function () {
+        $("#provinceSelectLabel").empty();
+        $("#provinceSelectLabel").html("<option value=\"0\" selected>-- Select Province --</option>")
+        appendWhatToWhere({
+            where:"#provinceSelectLabel",
+            what:{
+                label:"<option></option>",
+                content:getJsonArray("json/province.json",this.value)
+            }
+        })
+    })
+    $("#provinceSelectLabel").click(function () {
+        $("#citySelectLabel").empty();
+        $("#citySelectLabel").html("<option value=\"0\" selected>-- Select City --</option>")
+        appendWhatToWhere({
+            where:"#citySelectLabel",
+            what:{
+                label:"<option></option>",
+                content:getJsonArray("json/city.json",this.value)
+            }
+        })
+    })
+
+    $("#ConfirmBtn").click(function () {
+        var flag=($("#continentSelectLabel").val()!=0)
+                    &&($("#countrySelectLabel").val()!=0)
+                    &&($("#provinceSelectLabel").val()!=0)
+                    &&($("#citySelectLabel").val()!=0);
+        if(!flag){
+            alert("Please Complete Information");
+            return;
+        }
+        var param={
+            account:$("#infoDropdown").html(),
+            title:$("#title").val(),
+            article:editor.txt.html(),
+            articleText:editor.txt.text(),
+            city:[
+                $("#continentSelectLabel").val(),
+                $("#countrySelectLabel").val(),
+                $("#provinceSelectLabel").val(),
+                $("#citySelectLabel").val()
+            ],
+            attractionName: $("#viewName").val()
+        }
+        console.log(param);
+
+        $.ajax({
+            type:"POST",
+            traditional: true,
+            url:"saveStrategy",
+            data:param,
+            dataType:"text",
+            success:function (data) {
+                layer.msg("发布成功");
+                editor.txt.html("");
+                $("#title").val("");
+                $('#attractionSelectModal').modal('hide');
+
+
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        });
+    })
+
+</script>
+
+</html>

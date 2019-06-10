@@ -1,0 +1,61 @@
+server:
+  port: 8888
+#  tomcat:
+#    max-http-header-size: 1048576
+
+
+
+spring:
+ servlet:
+   multipart:
+     max-request-size: 1000MB
+     max-file-size: 10MB
+ jpa:
+  show-sql: true
+  hibernate:
+   ddl-auto: update
+ datasource:
+   url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+   driver-class-name: oracle.jdbc.driver.OracleDriver
+   username: c##tom
+   password: 123456
+
+ thymeleaf:
+   suffix: .html
+   prefix: classpath:/templates/
+   mode: HTML5
+   encoding: UTF-8
+   servlet:
+     content-type: text/html
+   cache: false
+   enabled: true
+   check-template-location: true
+ resources:
+   chain:
+     strategy:
+       content:
+         enabled: true
+         paths: /**
+pojo:
+  user:
+    online-state: -1
+    is-sys-admin: 0
+  Strategy:
+    user-id: 23
+    attractions-id: yzzj0003
+    content: ymcsdb
+wechat:
+ config:
+  AppID: wxe0ac0fd89108d866
+  AppSecret: 8bad0b3f71120a0a242a7d4b454e0aad
+  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+  apiTicketUrl: https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+
+
+
+custom:
+ email:
+  smtpHost: smtp.qq.com
+  account: 957023588@qq.com
+  password: csrsslxbxamcbcgf
+  receive: SixteenChapter@163.com

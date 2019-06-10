@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Session</title>
+</head>
+<body>
+    <div id="1" th:if="${session.ymc} == null">
+        ymc mude dabian chi
+    </div>
+    <div id="2" th:text="${session.ymc != null}  ? ${session.ymc}">
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<style>
+    h1,h2,h3,h4,h5,h6{
+        margin: 0px;
+    }
+    .info-1{
+        display: inline-block;
+        color: grey;
+        font-size: 15px;
+        margin-right: 15px;
+    }
+
+    .info-btn{
+        display: inline-block;
+        height: 36px;
+        width: 128px;
+        line-height: 24px;
+    }
+
+    .info-btn>div{
+        height: 36px;
+        padding: 0 10px;
+        display: inline-block;
+        line-height: 36px;
+        font-size: 20px;
+        margin: 0px;
+    }
+    .info-btn>img{
+        float: left;
+        padding: 0px;
+        margin: 0px;
+        width: 36px;
+        height: 36px;
+    }
+
+
+    #auther{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-left: 50px;
+    }
+    #location{
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
+    #content{
+        padding: 50px;
+        /*border-top: 1px grey solid;*/
+    }
+
+    #firstFloor{
+        border-bottom: #888888;
+    }
+    #title{
+        font-weight: 500;
+    }
+    #reportBtn{
+        width: 108px;
+        float: right;
+    }
+    #owner-info{
+        margin-top: 50px;
+        height: 64px;
+        /*padding-left: 50px;*/
+    }
+    #headpic,#owner,#concern{
+        display: inline-block;
+    }
+    #headpic{
+        height: 64px;
+        width: 64px;
+        float: left;
+    }
+    #headpic>img{
+        height: 64px;
+        width: 64px;
+    }
+    #owner{
+        margin-left: 50px;
+        height: 64px;
+    }
+    #owner-name{
+        height: 40px;
+        font-family: 华文行楷;
+        font-size: 32px;
+    }
+    #owner-fansnum{
+        font-family: 幼圆;
+        height: 24px;
+        font-size: 15px;
+    }
+    #owner-fansnum>span{
+        height: 24px;
+        line-height: 24px;
+    }
+
+    #owner-strategy{
+        padding: 0 25px;
+        height: 64px;
+        border:1px grey solid;
+        border-radius: 5px;
+    }
+    #owner-strategy:hover{
+        background-color: rgba(113, 116, 255, 0.07);
+    }
+    .strategies-recommended{
+        height: 70px;
+        padding: 0px 10px 5px 10px;
+        border-radius: 5px;
+    }
+
+    .stra-info-s-up{
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+    }
+
+    .stra-info-s-down{
+        padding-bottom: 10px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 14px;
+        color: grey;
+    }
+    #ownerinfobox{
+        position: fixed;
+        top: 51px;
+        /*屏幕分辨率125%的时候的right*/
+        right: 111.5px;
+        /*屏幕分辨率100%的时候的right*/
+        /*right: 511.5px*/
+        padding-left: 50px;
+        /*height: 453px;*/
+        width: 426.656px;
+    }
+    #look-more{
+        border-radius: 5px;
+        height: 30px;
+        margin-top: 20px;
+    }
+    .fixedBtn{
+        background-color: rgb(246, 249, 250);
+        height: 60px;
+        width: 60px;
+        padding: 5px 6px 5px 4px;
+        border: 1px rgba(136, 136, 136, 0.54) solid;
+        border-radius: 5px;
+        position: fixed;
+        right: 25px;
+    }
+    .fixedBtn>img{
+        height: 50px;
+        width: 50px;
+    }
+    #commentBtn{
+        bottom: 140px;
+    }
+    #topBtn{
+        bottom: 70px;
+        transition: all 2s;
+        display: none;
+    }
+    #authorStrategies{
+        height: 100%;
+        width: 37%;
+        /*background-color: rgb(255, 191, 160);*/
+        background-color: white;
+        position: fixed;
+        top: 0px;
+        right: -1209.609375px;
+        z-index: 1000;
+        padding-top: 50px;
+        -moz-box-shadow: 10px 10px 5px #888888; /* 老的 Firefox */
+        box-shadow: -5px 5px 5px #888888;
+    }
+    #Directory{
+        font-size: 30px;
+        padding-left: 40px;
+        margin-top: 20px;
+    }
+    #DirectoryOwner{
+        font-size: 20px;
+        color: gray;
+        padding-left: 43px;
+    }
+    #strategiesList{
+        margin-top: 20px;
+        padding-left: 40px;
+        font-size: 22px;
+    }
+    .strategy>span{
+        margin-left: 10px;
+    }
+    #subCommentBtn{
+        height: 71px;
+        width: 71px;
+        font-size: 18px;
+        border-radius: 10px;
+        color: white;
+        padding: 10px;
+    }
+    #editor{
+        height: 100px;
+        border: 1px grey solid;
+        border-radius: 5px;
+        overflow: auto;
+    }
+    /*#toolbar-elem4796500643803854 {*/
+        /*border: 1px solid #ccc;*/
+        /*color: skyblue;*/
+    /*}*/
+</style>
+<body style="background-image: none;background-color: rgba(217,255,235,0.2)">
+
+<div id="authorStrategies">
+    <div class="row" id="Directory" >目录</div>
+    <div class="row" id="DirectoryOwner"></div>
+    <div class="row" id="strategiesList"></div>
+</div>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home" style="font-size: 20px">Home</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <!--<li class="active"><a href="javascript:void(0)">Show Your Strategy</a></li>-->
+                <li><a href="/StrategyWrite">Show Your Strategy</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right nav-pills" >
+                <li th:if="${session.user}==null">
+                    <a href="registerEnter">
+                        <span class="glyphicon glyphicon-user"></span>
+                        Register
+                    </a>
+                </li>
+                <li th:if="${session.user}==null">
+                    <a href="loginEnter">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        Login
+                    </a>
+                </li>
+                <li th:if="${session.user}!=null" class="dropdown">
+                    <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getName()}"></a>
+                    <input id="hiddenAccount" type="hidden" th:value="${session.user.getAccount()}">
+                    <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" th:href="@{'/personalPage?pageName=个人资料&account='+${session.user.getAccount()}}">个人中心</a>
+                            <a role="menuitem" tabindex="-1" th:href="@{/Admin}" id="admin" th:if="${session.user.getIsSysAdmin()==1}">管理员</a>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0)" id="loginOut">退出登陆</a>
+                        </li>
+                    </ul>
+
+                </li>
+                <li th:if="${session.user}!=null">
+                    <a href="/Chat">
+                        消息
+                        <span id="msgNum" class="badge pull-right"></span>
+                    </a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+
+
+<div class="container" style="margin-top: 50px;margin-bottom: 100px">
+   <!--<div class="row">-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+        <!--<div class="col-md-1 text-center blue">1</div>-->
+        <!--<div class="col-md-1 text-center green">1</div>-->
+    <!--</div>-->
+    <!--<div class="row white">-->
+        <!--<div id="location" class="col-md-2 col-md-offset-1" th:text="${Strategy.getCityName()+'>'+Strategy.strategy.getAttractionsName()}">cityName>attractionName</div>-->
+    <!--</div>-->
+    <div class="row" style="margin-top: 20px">
+        <div id="strategy-infobox" class="col-md-8">
+
+
+            <div class="row">
+                <h1 id="title" class="col-md-12 " th:text="${Strategy.strategy.getTitle()}">Title</h1>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-12">
+                    <div class="info-1" th:text="${Strategy.strategy.getAttractionsName()}"></div>
+                    <div class="info-1" th:text="${Strategy.strategy.getPublishTime()}"></div>
+                    <div class="info-1" th:text="${Strategy.getWatchNum()+'阅读'}"></div>
+                    <div class="info-1" id="upgoodNumStr" th:text="${Strategy.getUpgoodNum()+'点赞'}"></div>
+                    <div class="info-1" id="collectNumStr" th:text="${Strategy.getCollectNum()+'收藏'}"></div>
+                </div>
+
+            </div>
+
+
+
+            <!--<div class="row white">-->
+                <!--<h4 id="auther" class="col-md-3 col-md-offset-1" th:text="${Strategy.strategy.getAccount()}">Auther</h4>-->
+            <!--</div>-->
+
+            <div class="row"  style="margin-top: 20px;font-size: 18px">
+                <div id="content" class="col-md-12 ">content</div>
+            </div>
+
+            <div class="row w-grey" style="font-size: 12px;padding:0 15px 35px 15px">
+                未经作者同意禁止转载或摘编
+            </div>
+
+            <div class="row" style="padding:0 15px 50px 15px">
+                <div class="col-md-12" style="padding: 0">
+                    <div class="info-btn">
+                        <img id="upgoodBtn" src="/img/upgood.png" class="on-put">
+                        <div id="upgoodNum" th:text="${Strategy.getUpgoodNum()}"></div>
+                    </div>
+
+                    <div class="info-btn">
+                        <img id="collectBtn" src="/img/collect.png"  class="on-put">
+                        <div id="collectNum" th:text="${Strategy.getCollectNum()}"></div>
+                    </div>
+
+                    <div id="reportBtn" class="info-btn on-put ">
+                        <img id="reportBtnImg" src="/img/warning.png">
+                        <div id="reportBtnWord">举报</div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="row pleft15" id="comment">
+                    <span class="col-md-2" style="font-size: 25px">评论</span>
+                    <span class="col-md-8  text-right" id="pageNums" style="height: 35px;line-height: 35px">
+
+                    </span>
+                    <span class="col-md-1 all-center PageBtn on-put" id="PreviousBtn">Previous</span>
+                    <span class="col-md-1 all-center PageBtn on-put" id="NextBtn">Next</span>
+                </div>
+
+                <div th:if="${session.user}!=null" class="row" style="margin: 10px 0">
+
+
+                    <div class="row pleft15" style="padding-right: 15px">
+                        <div th:if="${session.user.getHeadPic()}!=null" class="col-md-1 all-center" style="height: 98px;padding: 0;">
+                            <img th:src="@{${session.user.getHeadPic()}}" class="img-circle" height="48px" width="48px">
+                        </div>
+                        <div th:if="${session.user.getHeadPic()}==null" class="col-md-1 all-center" style="height: 98px;padding: 0;">
+                            <img src="/img/zzjb%20tank8.png" class="img-circle" height="48px" width="48px">
+                        </div>
+                        <div class="col-md-10">
+                            <div id="editor"></div>
+                            <div id="editorMenu"></div>
+                        </div>
+                        <div class="col-md-1  all-center " style="height: 100px;padding: 0">
+                            <div class=" skyBlue all-center on-put" id="subCommentBtn">
+                                发表评论
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pleft15" style="overflow: hidden">
+                        <hr class="col-md-11 col-md-offset-1">
+                    </div>
+
+                </div>
+
+                <div class="row mtop25 pleft15" id="commentList">
+                    <!--<div class="row pleft15" style="padding-right: 15px">-->
+                        <!--<div class="col-md-1 all-center">-->
+                            <!--<img src="/img/zzjb%20tank8.png" height="48px" width="48px">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-11">-->
+                            <!--<div class="userName">雅木猹</div>-->
+                            <!--<div style="font-size: 22px;">-->
+                                <!--<p>asfas f<img src="http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/40/pcmoren_tian_org.png" alt="[舔屏]" data-w-e="1"></p>-->
+                            <!--</div>-->
+                            <!--<div style="color: grey;">-->
+                                <!--<span>#1</span>-->
+                                <!--<span>2019年1月15日 15点13分</span>-->
+                            <!--</div>-->
+                            <!--<hr>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="row pleft15" style="padding-right: 15px">-->
+                        <!--<div class="col-md-1 all-center">-->
+                            <!--<img src="/img/zzjb%20tank8.png" height="48px" width="48px">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-11">-->
+                            <!--<div class="userName">雅木猹</div>-->
+                            <!--<div style="font-size: 22px;">asga sd gds sdg科技示范户看就卡和啊看世界回复爱看就看就发哈</div>-->
+                            <!--<hr>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="row pleft15" style="padding-right: 15px">-->
+                        <!--<div class="col-md-1 all-center">-->
+                            <!--<img src="/img/zzjb%20tank8.png" height="48px" width="48px">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-11">-->
+                            <!--<div class="userName">雅木猹</div>-->
+                            <!--<div style="font-size: 22px;">asga sd gds sdg科技示范户看就界回复爱看就看就发哈</div>-->
+                            <!--<hr>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="ownerinfobox" class="col-md-4 " >
+            <div class="row " >
+                <div id="owner-info">
+                    <div id="headpic">
+                        <!--author head pic-->
+                        <img class="img-circle">
+                    </div>
+                    <div id="owner">
+                        <div id="owner-name">
+                            <!--author name-->
+                        </div>
+                        <div id="owner-fansnum" class="all-center">
+                            <span class="all-center">粉丝:</span>
+                            <span class="all-center" style="color: grey;font-size: 17px">
+                                <!--粉丝数量-->
+                                88888
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top: 25px">
+                <div class="col-md-4">
+                    <button type="button" id="concernBtn" class="col-md-4 col-md-offset-4 btn btn-info" style="margin: 0;width: 100px">关注</button>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" id="sendMsgBtn" class="col-md-4 col-md-offset-4 btn btn-default" style="margin: 0;width: 100px">发送消息</button>
+                </div>
+
+
+            </div>
+
+            <div class="row" style="margin-top: 30px;">
+                <div id="owner-strategy" class="col-md-12 all-center on-put">
+                    <img src="/img/A4纸张.png" height="45px">
+                    <span style="font-size: 20px">他的攻略</span>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 30px">
+                <div style="font-size: 25px">
+                    推荐攻略
+                </div>
+                <hr>
+            </div>
+            <div class="row">
+                <div class="strategies-recommended on-put"></div>
+                <div class="strategies-recommended on-put"></div>
+                <div class="strategies-recommended on-put"></div>
+            </div>
+
+            <div class="row">
+                <div id="look-more" class="grey1 all-center on-put">
+                    查看更多 >
+                </div>
+            </div>
+            <div class="row ">
+                <div id="commentBtn" class="fixedBtn on-put ">
+                    <img src="/img/comment%20grey.png">
+                </div>
+                <div id="topBtn" class="fixedBtn on-put ">
+                    <img src="/img/top%20(2).png">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/wangEditor.js}"></script>
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/NormalSortPage.js}"></script>
+<script type="text/javascript" th:src="@{/js/websocketConnect.js}"></script>
+<script type="text/javascript">
+    if($("#infoDropdown").length>0){
+        //websocket 启动
+        var websocket=websocketConnect($("#hiddenAccount").val());
+        //websocket 接收到消息后的回调方法
+        websocket.onmessage=function (ev) {
+            console.log(ev);
+            if($("#msgNum").html()=="" || $("#msgNum").html()==null){
+                $("#msgNum").html(1);
+            }else{
+                var oldMsgNum=parseInt($("#msgNum").html());
+                $("#msgNum").html(oldMsgNum+1);
+            }
+        }
+        loadUnreadMsgNum($("#hiddenAccount").val());
+    }
+</script>
+
+<!--wangEditor-->
+<script type="text/javascript">
+
+    //wangEditor编辑器
+    if($("#editorMenu").length>0){
+        var W=window.wangEditor;
+        var editor=new  W('#editorMenu','#editor');
+        editor.customConfig.zIndex = 100;
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            // console.log(editor.txt.html());
+        }
+        editor.customConfig.menus = [
+            'emoticon',  // 表情
+        ]
+        editor.create();
+        $(".w-e-toolbar").css({
+            padding:"0",
+            marginTop:"10px"
+        });
+        $(".w-e-text").css({
+            overflow:"auto"
+        });
+    }
+
+</script>
+    <!--页面初始化-->
+<script type="text/javascript" th:inline="javascript">
+    //分页功能
+    var SortPage=new SortPage({
+        contianer:"#pageNums",
+        ajaxData:{
+            strategyId:[[${Strategy.strategy.getId()}]]
+        },
+        add:function (data){
+            addComment(data);
+        }
+    });
+    //上一页
+    $("#PreviousBtn").click(function (){
+        SortPage.pageNumChange(SortPage.configProperty.pageNum-1);
+        // console.log(SortPage.configProperty);
+    })
+    // 下一页
+    $("#NextBtn").click(function (){
+        SortPage.pageNumChange(SortPage.configProperty.pageNum+1);
+        // console.log(SortPage.configProperty);
+    })
+
+
+
+    //加载评论
+    function addComment(data) {
+        $("#commentList").empty();
+        $.each(data,function (i,n) {
+            addOneComment(i,n);
+        })
+    }
+    function addOneComment(i,n){
+        var comment=$("<div class=\"row pleft15\" style=\"padding-right: 15px\"></div>")
+        var c_pic_box=$("<div class=\"col-md-1 all-center\"></div>");
+        var c_pic;
+        $.ajax({
+            type:'GET',
+            url:'headPicCheck',
+            data:{
+                account:n.comment.userAccount
+            },
+            success:function (data) {
+                if(data){
+                    $.ajax({
+                        type:'post',
+                        url:'showHeadPicStrByAccount',
+                        data:{
+                            account:n.comment.userAccount
+                        },
+                        success:function (data) {
+                            c_pic=$("<img src=\""+data+"\" class=\"img-circle\" height=\"48px\" width=\"48px\">");
+                            c_pic.appendTo(c_pic_box);
+                        },
+                        error:function (e) {
+                            console.log(e);
+                        }
+                    })
+                }else{
+                    c_pic=$("<img src=\"img/ymc_.jpg\" class=\"img-circle\" height=\"48px\" width=\"48px\">");
+                    c_pic.appendTo(c_pic_box);
+                }
+
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+        c_pic_box.appendTo(comment);
+        var n_c=$("<div class=\"col-md-11\"></div>");
+        var uName=$("<div class=\"userName\">"+n.userName+"</div>");
+        uName.appendTo(n_c);
+        var comment_content=$("<div style=\"font-size: 22px;\"></div>");
+        comment_content.html(n.comment.commentContent);
+        comment_content.appendTo(n_c);
+        var t_l=$("<div style=\"color: grey;\"></div>");
+        var l=$("<span>#"+((SortPage.configProperty.pageNum-1)*SortPage.configProperty.pageSize+i+1)+"&nbsp;&nbsp;</span>");
+        l.appendTo(t_l);
+        var t=$("<span>"+n.timeStr+"</span>");
+        t.appendTo(t_l);
+        t_l.appendTo(n_c);
+        $("<hr>").appendTo(n_c);
+        n_c.appendTo(comment);
+        comment.appendTo($("#commentList"));
+    }
+
+
+
+    //加载右侧隐藏的作者文章
+    $.ajax({
+        type:'post',
+        url:'findStrategiesByAccount',
+        data:{
+            account:[[${Strategy.strategy.getAccount()}]]
+        },
+        dataType:'json',
+        success:function (data) {
+            // console.log(data);
+            $.each(data.data,function (i,n) {
+
+                var strategy=$("<div class=\"strategy on-put\"></div>");
+
+                var title=$("<span>"+n.strategy.title+"</span>");
+                var point;
+                if(n.strategy.id!=[[${Strategy.strategy.getId()}]]){
+                    point=$("<img src=\"/img/point.png\">");
+                    strategy.hover(function () {
+                        strategy.css("color","skyblue");
+                    },function () {
+                        strategy.css("color","black");
+                    });
+                    strategy.click(function () {
+                        window.open("/showStrategyInfo?strategyId="+n.strategy.id+"&browser="+getBrowserInfo());
+                    })
+                }else{
+                    title.css("color","skyblue");
+                    point=$("<img src=\"/img/圆心.png\">");
+                }
+                point.appendTo(strategy);
+                title.appendTo(strategy);
+
+                strategy.appendTo($("#strategiesList"));
+            });
+
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    })
+
+
+    //获取推荐攻略
+    $.ajax({
+        type:'post',
+        url:'showStrategiesByOperation',
+        data:{
+            start:1,
+            end:4,
+            startTimeL:new Date().getTime()-86400000*365,
+            operationId:getJsonArray("json/operation.json","upgood")
+        },
+        dataType:'json',
+        success:function (data) {
+            // console.log(data)
+            $.each(data.data,function (i,n) {
+                var ss=$(".strategies-recommended").eq(i)
+
+                var siup=$("<div class=\"stra-info-s-up\"></div>");
+                var siupL=$("<span style=\"float: left\">"+n.strategy.title+"</span>");
+                var siupR=$("<span style=\"float: right\">"+n.cityName+"</span>");
+                siupR.appendTo(siup);
+                siupL.appendTo(siup);
+                siup.appendTo(ss);
+
+                var sidown=$("<div class=\"stra-info-s-down\"></div>");
+                var sidownL=$("<span>"+n.publishTimeStr+"&nbsp   </span> ");
+                var sidownR=$("<span>阅读:"+n.watchNum+"</span>")
+                sidownL.appendTo(sidown);
+                sidownR.appendTo(sidown);
+                sidown.appendTo(ss);
+                ss.hover(function () {
+                    ss.css({
+                        "background-color":"rgba(98,255,167,0.2)"
+                    });
+                    siup.css({
+                        "color":"deepskyblue"
+                    })
+                },function () {
+                    ss.css({
+                        "background-color":"unset"
+                    });
+                    siup.css({
+                        "color":"black"
+                    })
+                });
+                ss.click(function () {
+                    window.open("/showStrategyInfo?strategyId="+n.strategy.id+"&browser="+getBrowserInfo());
+                })
+            });
+            // console.log(data);
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    })
+
+    //检查是否已关注作者
+    $.ajax({
+        type:'post',
+        url:'checkConcernOrNot',
+        data:{
+            account:[[${Strategy.strategy.getAccount()}]],
+        },
+        dataType:'json',
+        success:function (data) {
+            // console.log(data);
+            if(data.data){
+                $("#concernBtn").html("已关注");
+                $("#concernBtn").removeClass("btn-info").addClass("btn-default");
+            }
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    })
+
+
+    var author;
+    //获取作者信息
+    $.ajax({
+        type:"POST",
+        url:"getUserInfoByAccount",
+        data:{
+            account:[[${Strategy.strategy.getAccount()}]],
+        },
+        dataType:"json",
+        success:function (data) {
+            // console.log(data);
+            author=data.data.user;
+            $("#owner-name").html(data.data.user.name);
+            $("#DirectoryOwner").html(data.data.user.name+"的攻略")
+            $("#owner-fansnum").children("span")[1].innerHTML=data.data.fansNum;
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    });
+
+    //获取作者头像
+    $.ajax({
+        type:"GET",
+        url:"headPicCheck",
+        data:{
+            account:[[${Strategy.strategy.getAccount()}]],
+        },
+        success:function (data) {
+            if(data){
+                $.ajax({
+                    type:'post',
+                    url:'showHeadPicStrByAccount',
+                    data:{
+                        account:[[${Strategy.strategy.getAccount()}]],
+                    },
+                    success:function (data) {
+                        $("#headpic").children("img")[0].src=data;
+                    },
+                    error:function (e) {
+                        console.log(e);
+                    }
+                })
+            }else{
+                $("#headpic").children("img")[0].src="/img/ymc_.jpg";
+            }
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    })
+
+
+    // 判断是否收藏
+    $.ajax({
+        type:"POST",
+        url:"strategyInfoCheck",
+        data:{
+            strategyId:[[${Strategy.strategy.getId()}]],
+            operation:getJsonArray("json/operation.json","collect")
+        },
+        dataType:"json",
+        success:function (data) {
+            // console.log(data);
+            if(data.tip=="have"){
+                $("#collectBtn").attr("src","/img/collect_onput.png");
+                collectIconChange=function () {
+
+                }
+            }
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    });
+    //判断是否点赞
+    $.ajax({
+        type:"POST",
+        url:"strategyInfoCheck",
+        data:{
+            strategyId:[[${Strategy.strategy.getId()}]],
+            operation:getJsonArray("json/operation.json","upgood")
+        },
+        dataType:"json",
+        success:function (data) {
+            // console.log(data);
+            if(data.tip=="have"){
+                $("#upgoodBtn").attr("src","/img/upgood_onput.png");
+                upgoodIconChange=function () {
+
+                }
+            }
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    })
+    // 获取文章
+    $.ajax({
+        type:"POST",
+        url:"getStrategyInfo",
+        data:{
+            strategyId:[[${Strategy.strategy.getId()}]]
+        },
+        dataType:"json",
+        success:function (data) {
+            // console.log(data);
+            $("#content").html(data.data.strategy.content);
+        },
+        error:function (e) {
+            console.log(e);
+        }
+    })
+
+</script>
+<!--功能-->
+<script type="text/javascript" th:inline="javascript">
+    //查看更多按钮
+    $("#look-more").click(function (){
+        window.location.href="/home";
+    })
+
+
+
+    //t提交评论
+    $("#subCommentBtn").click(function () {
+        if(editor.txt.text()=="" || editor.txt.text()==null){
+            layer.msg("评论不能为空",{time:2*1000});
+            return;
+        }
+        $.ajax({
+            type:'post',
+            url:'saveComment',
+            data:{
+                commentContent:editor.txt.html(),
+                strategyId:[[${Strategy.strategy.getId()}]],
+            },
+            dataType:'json',
+            success:function (data) {
+                // console.log(data);
+                layer.msg(data.tip);
+                if(SortPage.configProperty.pageCount==0){
+                    SortPage.configProperty.pageCount+=1;
+                    SortPage.pageNumChange(SortPage.configProperty.pageCount);
+                }
+                else if($("#commentList").children("div").length<SortPage.configProperty.pageSize){
+                    addOneComment(1,data.data);
+                } else{
+                    SortPage.configProperty.pageCount+=1;
+                    SortPage.pageNumChange(SortPage.configProperty.pageCount);
+                }
+
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    })
+
+
+
+    //获取作者文章
+    $("#owner-strategy").click(function (event) {
+        event.stopPropagation();
+        $("#authorStrategies").animate({
+            right:"0px"
+        },1000);
+    });
+    $(document).click(function(event){
+
+        // var _con = $('#authorStrategies');  // 设置目标区域
+        // if(!_con.is(event.target) && _con.has(event.target).length !== 0){ // Mark 1
+        var target = $(event.target);
+        if(target.closest("#authorStrategies").length != 0) return;
+            $('#authorStrategies').animate({
+                right:"-1210px"
+            },1000);
+        // }
+    });
+
+    //滚动条判定
+    $(window).scroll(function () {
+        if($(document).scrollTop()>=51){
+            $("#topBtn").show();
+        }
+        if($(document).scrollTop()<51){
+            $("#topBtn").hide();
+        }
+    });
+
+    $("#topBtn").hover(function () {
+        $("#topBtn").children("img")[0].src="/img/top.png";
+    },function () {
+        $("#topBtn").children("img")[0].src="/img/top%20(2).png";
+    });
+    $("#commentBtn").hover(function () {
+        $("#commentBtn").children("img")[0].src="/img/comment skyblue.png";
+    },function () {
+        $("#commentBtn").children("img")[0].src="/img/comment%20grey.png";
+    });
+
+    $("#topBtn").click(function () {
+        $("html,body").animate({scrollTop:0}, 500);
+    });
+    $("#commentBtn").click(function () {
+        $("html,body").animate({scrollTop:$("#comment").offset().top},500)
+    })
+    //关注按钮
+    $("#concernBtn").click(function() {
+        var url=this.innerHTML=="关注" ? "concernUser" : "cancelConcern";
+        // console.log(url);
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:{
+                account:[[${Strategy.strategy.getAccount()}]]
+            },
+            dataType:"json",
+            success:function (data) {
+                // console.log(data);
+                var msg=data.tip
+                layer.msg(msg,{time:2*1000});
+                var fansNum;
+                if(msg=="已关注"){
+                    $("#concernBtn").html("已关注");
+                    $("#concernBtn").removeClass("btn-info").addClass("btn-default");
+                    fansNum=parseInt($("#owner-fansnum").children("span")[1].innerHTML)+1;
+                }else if(msg=="取消关注"){
+                    $("#concernBtn").html("关注");
+                    $("#concernBtn").removeClass("btn-default").addClass("btn-info");
+                    fansNum=parseInt($("#owner-fansnum").children("span")[1].innerHTML)-1;
+                }
+                $("#owner-fansnum").children("span")[1].innerHTML=fansNum;
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    })
+
+
+    //发送消息按钮
+    $("#sendMsgBtn").click(function(){
+        $.ajax({
+            type:'post',
+            url:'saveChatM',
+            data:{
+                account:[[${Strategy.strategy.getAccount()}]]
+            },
+            dataType:'json',
+            success:function (data) {
+                console.log(data);
+                if(data.tip=="success"){
+                    window.location.href="/Chat?toAccount="+[[${Strategy.strategy.getAccount()}]]+"&toName="+author.name;
+                }else{
+                    layer.msg(data.data);
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    })
+
+
+    //举报按钮
+    $("#reportBtn").click(function(){
+        $.ajax({
+            type:"POST",
+            url:"checkStrategyLegal",
+            data:{
+                strategyId:[[${Strategy.strategy.getId()}]]
+            },
+            dataType:"json",
+            success:function (data) {
+                alert(data.tip)
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    })
+
+    $("#reportBtn").hover(function () {
+        $("#reportBtnImg").attr("src","/img/warning on-put.png");
+        $("#reportBtnWord").css("color","yellow");
+    },function () {
+        $("#reportBtnImg").attr("src","/img/warning.png");
+        $("#reportBtnWord").css("color","black");
+    })
+
+
+    $("#collectBtn").hover(function () {
+        collectIconChange(this);
+    },function () {
+        collectIconChange(this);
+    });
+    $("#upgoodBtn").hover(function () {
+        upgoodIconChange(this);
+    },function () {
+        upgoodIconChange(this);
+    })
+
+    function collectIconChange(object) {
+        object.src=getJsonArray("json/IconChange.json","/img/"+object.src.split("/","5")[4]);
+    }
+    function upgoodIconChange(object) {
+        object.src=getJsonArray("json/IconChange.json","/img/"+object.src.split("/","5")[4]);
+    }
+
+    //收藏按钮
+    $("#collectBtn").click(function () {
+
+        $.ajax({
+            type:"POST",
+            url:"CollectUpgood",
+            data:{
+                strategyId:[[${Strategy.strategy.getId()}]],
+                operation:getJsonArray("json/operation.json","collect")
+            },
+            dataType:"json",
+            success:function (data) {
+                // console.log(data);
+                if(data.tip=="cancel"){
+                    $("#collectNum").html(parseInt($("#collectNum").html())-1);
+                    $("#collectNumStr").html(parseInt( $("#collectNumStr").html())-1+"收藏");
+                    $("#collectBtn").attr("src","/img/collect_onput.png");
+                    collectIconChange=function (object) {
+                        object.src=getJsonArray("json/IconChange.json","/img/"+object.src.split("/","5")[4]);
+                    }
+                }else if(data.tip=="Operate success"){
+                    $("#collectNum").html(parseInt($("#collectNum").html())+1);
+                    $("#collectNumStr").html(parseInt( $("#collectNumStr").html())+1+"收藏");
+                    layer.msg("收藏成功",{time:2*1000});
+                    $("#collectBtn").attr("src","/img/collect_onput.png");
+                    collectIconChange=function () {
+                        
+                    }
+                }else{
+                    alert(data.tip);
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    });
+    //点赞按钮
+    $("#upgoodBtn").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"CollectUpgood",
+            data:{
+                strategyId:[[${Strategy.strategy.getId()}]],
+                operation:getJsonArray("json/operation.json","upgood")
+            },
+            dataType:"json",
+            success:function (data) {
+                // console.log(data);
+                if(data.tip=="cancel"){
+                    $("#upgoodNum").html(parseInt($("#upgoodNum").html())-1);
+                    $("#upgoodNumStr").html(parseInt( $("#upgoodNumStr").html())-1+"点赞");
+                    $("#upgoodBtn").attr("src","/img/upgood_onput.png");
+                    upgoodIconChange=function (object) {
+                        object.src=getJsonArray("json/IconChange.json","/img/"+object.src.split("/","5")[4]);
+                    }
+                }else if(data.tip=="Operate success"){
+                    $("#upgoodNum").html(parseInt($("#upgoodNum").html())+1);
+                    $("#upgoodNumStr").html(parseInt( $("#upgoodNumStr").html())+1+"点赞");
+                    layer.msg("点赞成功",{time:2*1000});
+                    $("#upgoodBtn").attr("src","/img/upgood_onput.png");
+                    upgoodIconChange=function () {
+                        
+                    }
+                }else{
+                    alert(data.tip);
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    });
+
+
+
+</script>
+</html>

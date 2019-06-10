@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<style>
+    .blue{
+        background-color: blueviolet;
+    }
+    .green{
+        background-color: #5bc0de;
+    }
+
+    .area-selector{
+        color: grey;
+        height: 50px;
+        display: flex;
+        justify-content:center;
+        align-items:Center;
+        text-align: center;
+    }
+    .area-selector:hover{
+        color: skyblue;
+    }
+    .continentBtn:hover{
+        color: skyblue;
+    }
+    .countryBtn:hover{
+        color: skyblue;
+    }
+    .provinceBtn:hover{
+        color: skyblue;
+    }
+    #countryList{
+        height: 20px;
+        overflow: hidden;
+    }
+    #countryMore,#provinceMore{
+        display: none;
+    }
+
+    .nav2Btn{
+        height: 50px;
+        /*padding: 0;*/
+        /*background-color: black;*/
+    }
+    .nav2BtnDown{
+        height: 50px;
+        width: 128px;
+        background-color: whitesmoke;
+    }
+    .nav2BtnDown:hover{
+        background-color: skyblue !important;
+    }
+    .nav2BtnUp{
+        height: 48px;
+        background-color: whitesmoke;
+    }
+    .nav2BtnUp:hover{
+        color: skyblue !important;
+    }
+    .fixedBtn{
+        background-color: rgb(246, 249, 250);
+        height: 60px;
+        width: 60px;
+        padding: 5px 6px 5px 4px;
+        border: 1px rgba(136, 136, 136, 0.54) solid;
+        border-radius: 5px;
+        position: fixed;
+        right: 290px;
+        bottom: 50px;
+        display: none;
+    }
+    .fixedBtn>img{
+        height: 50px;
+        width: 50px;
+    }
+
+</style>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/home" style="font-size: 20px">Home</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!--<li class="active"><a href="javascript:void(0)">Show Your Strategy</a></li>-->
+                    <li><a href="/StrategyWrite">Show Your Strategy</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right nav-pills" >
+                    <li th:if="${session.user}==null">
+                        <a href="registerEnter">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Register
+                        </a>
+                    </li>
+                    <li th:if="${session.user}==null">
+                        <a href="loginEnter">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                            Login
+                        </a>
+                    </li>
+                    <li th:if="${session.user}!=null" >
+
+                        <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getName()}"></a>
+                        <input id="hiddenAccount" type="hidden" th:value="${session.user.getAccount()}">
+                        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" th:href="@{'/personalPage?pageName=个人资料&account='+${session.user.getAccount()}}">个人中心</a>
+                                <a role="menuitem" tabindex="-1" th:href="@{/Admin}" id="admin" th:if="${session.user.getIsSysAdmin()==1}">管理员</a>
+                                <a role="menuitem" tabindex="-1" href="javascript:void(0)" id="loginOut">退出登陆</a>
+                            </li>
+                        </ul>
+
+
+                    </li>
+                    <li th:if="${session.user}!=null" id="msgBtn">
+                        <a href="/Chat">
+                            消息
+                            <span id="msgNum" class="badge pull-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container" style="margin-top: 80px;padding: 0 50px">
+        <div class="row">
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 nav-2">
+                <div class="col-md-2 all-center" style="height: 50px">
+                    地区搜索:
+                </div>
+                <div id="continentSelect" class="col-md-2 text-center on-put area-selector" data-toggle="modal" data-target="#continentSelectModal">
+                    Continent
+                </div>
+                <div id="countrySelect" class="col-md-2 text-center on-put area-selector" style="visibility:hidden;" data-toggle="modal" data-target="#countrySelectModal">
+                    Country
+                </div>
+                <div id="provinceSelect" class="col-md-2 text-center on-put area-selector" style="visibility:hidden;" data-toggle="modal" data-target="#provinceSelectModal">
+                    Province
+                </div>
+                <div class="col-md-4 all-center" >
+                    <div class="input-group" style="height: 50px;padding: 8px 0">
+                        <input id="searchBox" type="text" class="form-control" placeholder="想找什么?">
+                        <span id="searchBtn" class="input-group-addon on-put">搜索</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row mtop10">
+            <div class="col-md-8 col-md-offset-2 nav-2">
+                <div class="col-md-2 all-center on-put nav2Btn">
+                    <div class="nav2BtnDown" style="background-color: skyblue">
+                        <div id="RecommendedBtn" class="nav2BtnUp all-center" style="color: skyblue">
+                            推荐
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 all-center on-put  nav2Btn">
+                    <div class="nav2BtnDown">
+                        <div id="HotBtn" class="nav2BtnUp all-center">
+                            热门
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 all-center on-put nav2Btn">
+                    <div class="nav2BtnDown">
+                        <div id="NewBtn" class="nav2BtnUp all-center">
+                            最新
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${session.user}!=null" class="col-md-2 all-center on-put nav2Btn">
+                    <div class="nav2BtnDown">
+                        <div id="ConcernBtn" class="nav2BtnUp all-center">
+                            我的关注
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-md-2 all-center on-put nav2Btn">-->
+                    <!--<div class="nav2BtnDown">-->
+                        <!--<div id="NearBtn" class="nav2BtnUp all-center">-->
+                            <!--附近-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="artilces" class="col-md-8 col-md-offset-2">
+                
+                <!--<div class="row a-strategy">-->
+                    <!--<div class="col-md-2">-->
+                        <!--<img src="/img/top%20(1).png" class="img-cycle img-responsive">-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-10" >-->
+                        <!--<div style="font-size: 20px">-->
+                            <!--Title-->
+                        <!--</div>-->
+                        <!--<div class="w-grey" style="font-size: 14px;">-->
+                            <!--<span>2019年1月17日 15点21分</span>-->
+                        <!--</div>-->
+                        <!--<div class="mtop10">-->
+                            <!--<span style="padding-right: 20px">北京</span>-->
+                            <!--<span style="padding-right: 20px">天安门</span>-->
+                        <!--</div>-->
+                        <!--<div class="mtop10" style="font-size: 17px">-->
+                            <!--k'j科技股份看的设计风格LDKG LSDKJFG LKG FLAJDG KSDH Fkfh lsjg空间更大弗兰克结果森林防凯撒和分厘卡施工方-->
+                            <!--间客房撒谎发生客户发送卡很快就发生客户立法开放加沙授课计划埃里克计划f-->
+                        <!--</div>-->
+                        <!--<div class="mtop10" style="height: 16px">-->
+                            <!--<img src="/img/眼睛.png" width="22px">-->
+                            <!--<span class="wordAfter">456</span>-->
+                            <!--<img src="/img/讨论.png" height="18px">-->
+                            <!--<span class="wordAfter">123</span>-->
+                            <!--<img src="/img/点赞.png" height="18px">-->
+                            <!--<span class="wordAfter">789</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            </div>
+            <div id="topBtn" class="fixedBtn on-put ">
+                <img src="/img/top%20(2).png">
+            </div>
+        </div>
+        <div class="row" id="loadingImg" style="display: none">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                    <img class="row" src="/plus/layer/theme/default/loading-1.gif">
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-bottom: 100px">
+
+            <div class="col-md-8 col-md-offset-2 ">
+                <hr>
+            </div>
+            <div class="col-md-8 col-md-offset-3">
+                <div style="color: black">
+                    联系我:957023588@qq.com
+                </div>
+                <div>
+                    <a href="/FeedBack" style="color: black">意见反馈</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div class="modal fade" id="continentSelectModal" tabindex="-1" role="dialog" aria-labelledby="continentSelectModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="continentSelectModalBody" class="modal-body" style="height: 200px">
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+    <div>
+        <div class="modal fade" id="countrySelectModal" tabindex="-1" role="dialog" aria-labelledby="conuntrySelectModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style="height: 350px;overflow: hidden">
+                        <div id="countrySelectModalBody" style="height:350px;width: 618px;overflow: auto;">
+
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+
+    <div>
+        <div class="modal fade" id="provinceSelectModal" tabindex="-1" role="dialog" aria-labelledby="provinceSelectModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style="height: 350px;overflow: hidden">
+                        <div id="provinceSelectModalBody" style="height:350px;width: 618px;overflow: auto;">
+
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/websocketConnect.js}"></script>
+
+
+
+
+
+<script type="text/javascript" th:inline="javascript">
+
+
+
+    //---------------------------websocket----------------------------------------
+    if($("#infoDropdown").length>0){
+        //websocket 启动
+        var websocket=websocketConnect($("#hiddenAccount").val());
+        //websocket 接收到消息后的回调方法
+        websocket.onmessage=function (ev) {
+            console.log(ev);
+            if($("#msgNum").html()=="" || $("#msgNum").html()==null){
+                $("#msgNum").html(1);
+            }else{
+                var oldMsgNum=parseInt($("#msgNum").html());
+                $("#msgNum").html(oldMsgNum+1);
+            }
+        }
+        loadUnreadMsgNum($("#hiddenAccount").val());
+    }
+    //--------------------------初始化加载--------------------------------------------
+    var start=0;
+    var pageSize=10;
+    var operationId=getJsonArray("json/operation.json","upgood");
+    var pageLock=false;
+    function changeStartAndEnd(){
+        if(pageLock){
+            return;
+        }
+        start+=pageSize;
+    }
+    function initPage(){
+        if(pageLock){
+            return;
+        }
+        start=0;
+    }
+
+    window.onscroll=function(){
+        scrollFun();
+    };
+    function scrollFun(){
+        if($(window).scrollTop()+1>=$(document).height()-$(window).height()){
+            // $("#loadingImg").show();
+            changeStartAndEnd();
+            scrollAddFun({
+                start:start,
+                end:start+pageSize,
+                operationId:operationId
+            });
+        }
+    }
+    function scrollAddFun(){};
+    scrollAddFun=loadRecommendedStrategies;
+
+    //加载文章基础信息
+    loadRecommendedStrategies({
+        start:start,
+        end:start+pageSize,
+        operationId:getJsonArray("json/operation.json","upgood")
+    });
+    
+    //-----------------------------------------方法------------------------
+
+
+
+
+    function noMoreData(){
+        var item=$('<div class="row a-strategy text-center">no more data</div>');
+        item.html("no more data");
+        item.appendTo($("#artilces"));
+        window.onscroll=function(){ };
+    }
+    
+    
+    function loadRecommendedStrategies(option){
+        $("#loadingImg").show();
+        $.ajax({
+            type:"POST",
+            url:"showStrategiesByOperation",
+            data:{
+                start:option.start,
+                end:option.end,
+                startTimeL:new Date().getTime()-86400000*365,
+                operationId:option.operationId
+            },
+            dataType:"json",
+            success:function (data) {
+                $("#loadingImg").hide();
+                // console.log(data);
+                if(data.data.length>=pageSize){
+                    addStrategyElements(data.data);
+                }else if(data.data.length>0){
+                    addStrategyElements(data.data);
+                    noMoreData()
+                }else{
+                    noMoreData();
+                }
+                // console.log(data);
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        });
+    }
+
+
+
+
+//------------------------------------------------功能------------------------------------------
+
+    $(window).scroll(function () {
+        if($(document).scrollTop()>=51){
+            $("#topBtn").show();
+        }
+        if($(document).scrollTop()<51){
+            $("#topBtn").hide();
+        }
+    });
+
+    $("#topBtn").hover(function () {
+        $("#topBtn").children("img")[0].src="/img/top.png";
+    },function () {
+        $("#topBtn").children("img")[0].src="/img/top%20(2).png";
+    });
+
+    $("#topBtn").click(function () {
+        $("html,body").animate({scrollTop:0}, 500);
+    });
+
+
+    //推荐按钮
+    $("#RecommendedBtn").click(function (){
+        $("#artilces").empty();
+        initPage();
+        window.onscroll=function(){
+            scrollFun();
+        };
+        loadRecommendedStrategies({
+            start:0,
+            end:10,
+            operationId:getJsonArray("json/operation.json","upgood")
+        });
+        operationId=getJsonArray("json/operation.json","upgood");
+    })
+    
+    $("#HotBtn").click(function(){
+        $("#artilces").empty();
+        initPage();
+        window.onscroll=function(){
+            scrollFun();
+        };
+        loadRecommendedStrategies({
+            start:0,
+            end:10,
+            operationId:getJsonArray("json/operation.json","watch")
+        });
+        operationId=getJsonArray("json/operation.json","watch");
+    });
+
+    $("#NewBtn").click(function(){
+        $("#artilces").empty();
+        initPage();
+        window.onscroll=function(){
+            scrollFun();
+        };
+        NewAdd({
+            start:0,
+            end:10,
+        });
+        scrollAddFun=NewAdd;
+    });
+    
+    function NewAdd(option){
+        $("#loadingImg").show();
+        $.ajax({
+            type:'post',
+            url:'showStrategiesOrderByTime',
+            data:{
+                start:option.start,
+                end:option.end,
+            },
+            dataType:'json',
+            success:function (data) {
+                $("#loadingImg").hide();
+                if(data.data.length>=pageSize){
+                    addStrategyElements(data.data);
+                }else if(data.data.length>0){
+                    addStrategyElements(data.data);
+                    noMoreData()
+                }else{
+                    noMoreData();
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+    
+
+    $("#ConcernBtn").click(function(){
+        $("#artilces").empty();
+        initPage();
+        window.onscroll=function(){
+            scrollFun();
+        };
+        ConcernAdd({
+            start:0,
+            end:10,
+        });
+        scrollAddFun=ConcernAdd;
+    })
+    
+    function ConcernAdd(option){
+        $("#loadingImg").show();
+        $.ajax({
+            type:'post',
+            url:'showStrategiesByConcern',
+            data:{
+                start:option.start,
+                end:option.end,
+            },
+            dataType:'json',
+            success:function (data) {
+                $("#loadingImg").hide();
+                // console.log(data)
+                if(data.data.length>=pageSize){
+                    addStrategyElements(data.data);
+                }else if(data.data.length>0){
+                    addStrategyElements(data.data);
+                    noMoreData()
+                }else{
+                    noMoreData();
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+    
+    
+
+    $("#searchBtn").click(function (){
+        if($("#searchBox").val()=="" || $("#searchBox").val()==null){
+            layer.msg("不能为空");
+        }else{
+            window.open("SearchResult?condition="+$("#searchBox").val());
+        }
+
+    })
+
+//     导航栏二
+    $(".nav2BtnUp").click(function(){
+        $(".nav2BtnUp").css({
+            color:"black"
+        });
+        $(".nav2BtnDown").css({
+            backgroundColor:"whitesmoke"
+        })
+        this.style.color="skyblue";
+        this.parentNode.style.backgroundColor="skyblue";
+    });
+
+
+
+
+
+
+
+    appendWhatToWhere({
+    where:"#continentSelectModalBody",
+    what:{
+        label:"<div class=\"on-put on-click\" data-dismiss=\"modal\"></div>",
+        content:getJsonArray("json/continent.json","continent")
+    }
+    });
+
+    $('#countrySelectModal').on('shown.bs.modal', function () {
+        console.log($("#countrySelectModalBody").innerHeight());
+    })
+
+    // 地区选择
+    $(".on-click").click(function () {
+        $("#continentSelect").html(this.innerHTML);
+        getStrategies({
+            "continent":this.innerHTML
+        })
+        $("#countrySelectModalBody").empty();
+        $("#countrySelect").html("Country");
+        appendWhatToWhere({
+            where:"#countrySelectModalBody",
+            what:{
+                label:"<div class=\"on-put on-click-country\" data-dismiss=\"modal\"></div>",
+                content:getJsonArray("json/country.json",this.innerHTML)
+            },
+        });
+
+
+        $(".on-click-country").click(function () {
+            $("#countrySelect").html(this.innerHTML);
+            getStrategies({
+                "continent":$("#continentSelect").html(),
+                "country":this.innerHTML
+            });
+            $("#provinceSelectModalBody").empty();
+            $("#provinceSelect").html("Province");
+            appendWhatToWhere({
+                where:"#provinceSelectModalBody",
+                what:{
+                    label:"<div class=\"on-put on-click-province\" data-dismiss=\"modal\"></div>",
+                    content:getJsonArray("json/province.json",this.innerHTML)
+                },
+            })
+            $(".on-click-province").click(function (){
+                $("#provinceSelect").html(this.innerHTML);
+                getStrategies({
+                    "continent":$("#continentSelect").html(),
+                    "country":$("#countrySelect").html(),
+                    "province":this.innerHTML
+                });
+            })
+            $("#provinceSelect").css({
+                visibility:"visible"
+            });
+        })
+        $("#countrySelect").css({
+            visibility:"visible"
+        });;
+    });
+
+    function getStrategies(param) {
+        // console.log(param)
+        $("#artilces").empty();
+        $.ajax({
+            type:"POST",
+            //防止深度序列化,防止list变空
+            traditional: true,
+            data:param,
+            url:"showByScreening",
+            dataType:"json",
+            success:function (data) {
+                addStrategyElements(data.data)
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
+    
+
+
+</script>
+
+
+
+
+
+</html>

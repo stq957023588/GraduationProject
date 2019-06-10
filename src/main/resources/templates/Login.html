@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<style>
+    body{
+        background: url("/img/b_1.jpg") no-repeat;
+        background-size: 100%;
+    }
+    #entranceChange{
+        height: 50px;
+        padding-right: 15px;
+    }
+    #entranceChange:hover{
+        color: skyblue;
+    }
+    .loginBox{
+        height: 350px;
+        background: rgba(245, 245, 245, 0.47);
+    }
+</style>
+
+<body >
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/home" style="font-size: 20px">Home</a>
+                </div>
+                <div id="entranceChange" class="nav navbar-nav navbar-right nav-pills w-grey all-center on-put">
+                    Admin Entrance
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 100px">
+        <div class="row">
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+        </div>
+
+        <div class="row all-center">
+            <div class="col-md-3 loginBox borderR5" style="padding: 25px 50px 0 50px">
+                <div style="margin-bottom: 20px">
+                    <img id="headPic" src="/img/ymc_.jpg" class="headPicCss">
+                </div>
+                <form id="loginForm" method="post" action="/loginCtrl">
+                    <input type="text"  class="form-control text-center" placeholder="账号"   name="account"  id="account"><br>
+                    <input type="password"  class="form-control text-center" placeholder="密码" name="password" id="password"><br>
+                    <!--<div class="checkbox" style="margin-top: 0">-->
+                        <!--<label style="margin-right: 30px">-->
+                            <!--<input type="checkbox" name="remember" >记住密码-->
+                        <!--</label>-->
+                        <!--<label>-->
+                            <!--<input type="checkbox" name="loginAuto" >自动登陆-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <div class="btnDiv">
+                        <button id="subBtn"  type="button" class="btn btn-default" style="width: 100%">登陆</button>
+                    </div>
+
+                </form>
+
+                <div class="text-right" style="font-size: 12px;margin-top: 40px;">
+                    <a class="Sink" href="/registerEnter">注册账号</a>
+                    <span style="margin: 0 5px">|</span>
+                    <a class="Sink" href="/ForgetPassword">忘记密码?</a>
+                    <span style="margin: 0 5px">|</span>
+                    <a class="Sink" href="/FeedBack">意见反馈</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+<script type="text/javascript">
+
+    $("#subBtn").click(function () {
+        var accountNotNull=($("#account").val()!=null && $("#account").val()!="");
+        var passwordNotNull=($("#password").val()!=null && $("#password").val()!="");
+        var nullCheck=accountNotNull&&passwordNotNull;
+        if(!nullCheck){
+            // console.log("account and password can not be null");
+            layer.msg("密码和账号不能为空",{time:2*1000});
+            return;
+        }
+        $.ajax({
+            type:"POST",
+            url:"loginCtrl",
+            data:$("#loginForm").serialize(),
+            dataType:"json",
+            success:function (data) {
+                // console.log(data);
+                if(data.tip=="Success"){
+                    checkPasswordProtection();
+                }else{
+                    layer.msg("账号或密码错误",{time:2*1000});
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+
+
+
+    });
+    function checkPasswordProtection(){
+        $.ajax({
+            type:'post',
+            url:'getUserInfoByAccount',
+            data:{
+                account:$("#account").val()
+            },
+            dataType:'json',
+            success:function (data) {
+                if(data.data.user.problem==null){
+                    layer.confirm('该账户未设置密保问题,是否前去设置?', {
+                        btn: ['去','不去'] //按钮
+                    }, function(){
+                        // layer.msg('设置密保界面未启动');
+                        window.location.href="ChangeProblem?account="+$("#account").val();
+                    }, function(){
+                        // window.location.href=document.referrer;
+                        window.location.href="/home";
+                    });
+                }else{
+                    // window.location.href=document.referrer;
+                    window.location.href="/home";
+                }
+                // console.log(data);
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        });
+    }
+
+    $('#account').change(function () {
+        $.ajax({
+            type: "POST",
+            url: "accountExistCheck",
+            data: {
+                account:$('#account').val()
+            },
+            success: function (data) {
+                // console.log(data);
+                if(data.data!=null &&data.data.headPic!=null){
+                    $('#headPic').attr("src",data.data.headPic);
+                }
+
+            },
+            error: function (e) {
+                console.log("error"+e);
+            },
+            dataType: 'json'
+        })
+    });
+</script>
+</html>

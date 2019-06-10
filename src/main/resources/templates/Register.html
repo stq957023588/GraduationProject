@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link type="text/css" rel="stylesheet" th:href="@{/css/Common.css}"/>
+<link rel="stylesheet" th:href="@{/plus/ImgCropping/css/cropper.min.css}">
+<link rel="stylesheet" th:href="@{/plus/ImgCropping/css/ImgCropping.css}">
+<style>
+    .nav-r-m{
+        height: 50px;
+        font-size: 15px;
+        color: grey;
+    }
+    .nav-r-m:hover{
+        color: black;
+    }
+    .msg-config{
+        width: 300px;
+        height: 0px;
+        overflow: hidden;
+        margin: 0px auto;
+        font-size: 14px;
+        padding-left: 5px;
+    }
+    .input-config{
+        height: 40px;
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 15px;
+    }
+
+    .btnDiv{
+        width: 128px;
+        margin: 0 auto;
+        margin-top: 15px;
+    }
+
+</style>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <a class="nav-r-m all-center col-md-1 col-md-offset-9" href="/home">
+                主页
+            </a>
+            <a class="nav-r-m all-center col-md-1" href="/loginEnter">
+                返回登陆
+            </a>
+            <a class="nav-r-m all-center col-md-1" href="/FeedBack-">
+                意见反馈
+            </a>
+        </div>
+
+        <div class="row">
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+            <!--<div class="col-md-1 text-center blue">1</div>-->
+            <!--<div class="col-md-1 text-center green">1</div>-->
+        </div>
+
+        <div class="row mtop25">
+            <div class="col-md-6 col-md-offset-3 borderR5" style="background-color: whitesmoke;padding-bottom: 50px">
+                <div class="text-center" style="width: 300px;margin: 0 auto;font-size: 30px;margin-top: 25px">
+                    欢迎注册
+                </div>
+                <form id="registerForm" method="post" action="registerCtrl" >
+                    <!--<div id="imgContainer" style="margin: 0 auto;margin-top: 10px"></div>-->
+                    <div style="width:100px;margin: 10px auto">
+                        <img id="headPic" src="/img/ymc_.jpg" height="100px" width="100px" >
+                        <input type="hidden" id="imgInput" name="headPic">
+                    </div>
+
+                    <input type="text" id="name" name="name" class="form-control text-center  input-config" placeholder="昵称">
+                    <div id="nameMsgDiv" class="msg-config"></div>
+                    <input type="text" id="account" name="account" class="form-control text-center  input-config" placeholder="账号">
+                    <div id="accountMsgDiv" class="msg-config"></div>
+                    <input type="password" id="password" name="password" class="form-control text-center  input-config" placeholder="密码">
+                    <div id="passwordMsgDiv" class="msg-config"></div>
+                    <input type="password" id="repeat" name="repeat" class="form-control text-center  input-config" placeholder="重复密码">
+                    <div id="repeatMsgDiv" class="msg-config"></div>
+                    <div class="btnDiv">
+                        <button id="subBtn"  type="button" class="btn btn-default" style="margin-right: 15px" >注册</button>
+                        <input id="reset"  type="reset" class="btn btn-default" >
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div style="display: none" class="tailoring-container">
+        <div class="black-cloth" onclick="closeTailor(this)"></div>
+        <div class="tailoring-content">
+            <div class="tailoring-content-one">
+                <label title="上传图片" for="chooseImg" class="l-btn choose-btn">
+                    <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden" onchange="selectImg(this)">
+                    选择图片
+                </label>
+                <div class="close-tailoring"  onclick="closeTailor(this)">×</div>
+            </div>
+            <div class="tailoring-content-two">
+                <div class="tailoring-box-parcel">
+                    <img id="tailoringImg">
+                </div>
+                <div class="preview-box-parcel">
+                    <p>图片预览：</p>
+                    <div class="square previewImg"></div>
+                    <div class="circular previewImg"></div>
+                </div>
+            </div>
+            <div class="tailoring-content-three">
+                <button class="l-btn cropper-reset-btn">复位</button>
+                <button class="l-btn cropper-rotate-btn">旋转</button>
+                <button class="l-btn cropper-scaleX-btn">换向</button>
+                <button class="l-btn sureCut" id="sureCut">确定</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/ImgPreview.js}"></script>
+<script type="text/javascript" th:src="@{/js/tools.js}"></script>
+<script type="text/javascript" th:src="@{/plus/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/plus/ImgCropping/js/cropper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/CutImg.js}"></script>
+
+
+<script type="text/javascript">
+
+
+
+
+    //名字改变后判断是否为空
+    $("#name").change(function () {
+        // var reg=/^\w{1,16}$/;
+        var reg=/^\w|[\u4e00-\u9fa5]{1,16}$/;
+
+        if(reg.test($("#name").val())){
+            console.log(true)
+            $("#nameMsgDiv").animate({
+                height:"0px"
+            },200);
+            $("#nameMsgDiv").empty();
+        }else{
+            console.log(false)
+            $("<div class=\"tipMsg\">昵称不合法</div>").appendTo($("#nameMsgDiv"));
+            $("#nameMsgDiv").animate({
+                height:"23px"
+            },300);
+        }
+    });
+    //加锁,改变账号提示div高度
+    var accountMsgHeghtLock=false;
+    function changeAccountMsgHeight(flag){
+        if(accountMsgHeghtLock){
+            changeAccountMsgHeight(flag);
+            return;
+        }
+        accountMsgHeghtLock=true;
+        var height=$("#accountMsgDiv").children().length*23;
+        if(flag){
+            $("#accountMsgDiv").animate({
+                height:height
+            },200);
+        }else{
+            $("#accountMsgDiv").animate({
+                height:height
+            },200);
+        }
+    }
+    //账号改变后判断是否合法
+    $("#account").change(function () {
+        var reg=/^\w{8,16}$/;
+
+        if(reg.test($("#account").val())){
+            changeAccountMsgHeight(true);
+            $("#accountRule").remove();
+            accountMsgHeghtLock=false;
+        }else{
+            if($("#accountRule").length<=0){
+                $("<div id='accountRule' class=\"tipMsg\">账号长度为8-16,且不能有特殊字符</div>").appendTo($("#accountMsgDiv"));
+                changeAccountMsgHeight(false);
+                accountMsgHeghtLock=false;
+                return;
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url:"accountExistCheck",
+            data:{
+                account:this.value
+            },
+            success:function (data) {
+                // console.log(data);
+                if(data.data!=null){
+                    if($("#accountExist").length<=0){
+                        $("<div id='accountExist' class=\"tipMsg\">账号已存在</div>").appendTo($("#accountMsgDiv"));
+                        changeAccountMsgHeight(false);
+                    }
+                }else{
+                    $("#accountExist").remove();
+                    changeAccountMsgHeight(true);
+                }
+                accountMsgHeghtLock=false;
+            },
+            error:function (e) {
+                console.log(e);
+            },
+            dataType:"json"
+        });
+    });
+
+    var passwordMsgHeghtLock=false;
+    function changePasswordMsgHeight(flag){
+        if(passwordMsgHeghtLock){
+            changePasswordMsgHeight(flag);
+            return;
+        }
+        passwordMsgHeghtLock=true;
+        if(flag){
+            $("#passwordMsgDiv").animate({
+                height:$("#passwordMsgDiv").height()-23
+            },200);
+        }else{
+            $("#passwordMsgDiv").animate({
+                height:$("#passwordMsgDiv").height()+23
+            },200);
+        }
+        passwordMsgHeghtLock=false;
+    }
+
+
+    //密码改变后判断是否合法
+    $("#password").change(function () {
+        var reg=/^\w{8,16}$/;
+        if(reg.test($("#password").val())){
+            changePasswordMsgHeight(true);
+            $("#passwordRule").remove();
+        }else {
+            if($("#passwordRule").length<=0){
+                changePasswordMsgHeight(false);
+                $("<div id='passwordRule' class=\"tipMsg\">密码长度为8-16,且不能有特殊字符</div>").appendTo($("#passwordMsgDiv"));
+            }
+        }
+
+        //密码改变后重复输入密码出重新判断2次密码是否一致
+        if($("#repeat").val()!=""){
+            repeatChange();
+        }
+    });
+
+    $("#repeat").change(repeatChange);
+
+    var repeatMsgHeghtLock=false;
+    function changeRepeatMsgHeight(flag){
+        if(repeatMsgHeghtLock){
+            changeRepeatMsgHeight(flag);
+            return;
+        }
+        repeatMsgHeghtLock=true;
+        if(flag){
+            $("#repeatMsgDiv").animate({
+                height:$("#repeatMsgDiv").height()-23
+            },200);
+        }else{
+            $("#repeatMsgDiv").animate({
+                height:$("#repeatMsgDiv").height()+23
+            },200);
+        }
+        repeatMsgHeghtLock=false;
+    }
+
+    function repeatChange() {
+        var password=$("#password").val();
+        var repeat=$("#repeat").val();
+        if(password==repeat){
+            changeRepeatMsgHeight(true);
+            $("#notSame").remove();
+        }else{
+            if($("#notSame").length<=0){
+                changeRepeatMsgHeight(false);
+                $("<div id='notSame' class=\"tipMsg\">两次密码不一致</div>").appendTo($("#repeatMsgDiv"));
+            }
+
+        }
+    }
+
+
+
+    $("#subBtn").click(function () {
+        var accountCondition=($("#accountMsgDiv").children().length<=0);
+        var nameCondition=($("#nameMsgDiv").children().length<=0);
+        var passwordCondition=($("#passwordMsgDiv").children().length<=0);
+        var repeatCondition=($("#repeatMsgDiv").children().length<=0);
+
+        var nameNotNull=($("#name").val()!=null && $("#name").val()!="");
+        var accountNotNull=($("#account").val()!=null && $("#account").val()!="");
+        var passwordNotNull=($("#password").val()!=null&&$("#password").val()!="");
+        var repeatNotNull=($("#repeat").val()!=null&&$("#repeat").val()!="");
+
+        var nullCheck=(accountNotNull&&passwordNotNull&&repeatNotNull&&nameNotNull);
+
+        if(!nullCheck){
+            layer.msg("昵称,账号,密码不能为空");
+            return;
+        }
+        if(accountCondition && nameCondition&&passwordCondition&&repeatCondition){
+            $("#registerForm").submit();
+            // layer.msg("提交")
+        }else{
+            layer.msg("昵称,账号,或密码不合法");
+        }
+        //headPic exist check
+        // console.log($("#imgContainer input").get(0).files[0]==null);
+    })
+
+
+
+
+
+
+    uploadImgPreviewInit({
+        containerId: "#imgContainer",
+        defaultImg:"/img/z_add.png",
+        resetId: "#reset"
+    });
+
+
+
+
+</script>
+</html>

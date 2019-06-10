@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<style>
+    #breadcrumbContianer{
+        position: relative;
+        top: -10px;
+    }
+    .on-put{
+        cursor: pointer;
+    }
+
+</style>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="https://v3.bootcss.com/examples/starter-template/#">Project name</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="https://v3.bootcss.com/examples/starter-template/#">Home</a></li>
+                    <li><a href="https://v3.bootcss.com/examples/starter-template/#about">About</a></li>
+                    <li><a href="https://v3.bootcss.com/examples/starter-template/#contact">Contact</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right nav-pills" >
+                    <li th:if="${session.user}==null">
+                        <a href="registerEnter">
+                            <span class="glyphicon glyphicon-user"></span>
+                            注册
+                        </a>
+                    </li>
+                    <li th:if="${session.user}==null">
+                        <a href="loginEnter">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                            登录
+                        </a>
+                    </li>
+                    <li th:if="${session.user}!=null" class="dropdown">
+                        <a id="infoDropdown" class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" th:text="${session.user.getAccount()}"></a>
+
+                        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="infoDropdown">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Java</a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li th:if="${session.user}!=null">
+                        <a href="javascript:void(0)">
+                            消息
+                            <span class="badge pull-right">42</span>
+                        </a>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container" id="container" style="margin-top: 100px">
+        <div class="row">
+            <div class="col-md-1" style="background-color: #5bc0de">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5cb85c">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5bc0de">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5cb85c">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5bc0de">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5cb85c">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5bc0de">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5cb85c">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5bc0de">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5cb85c">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5bc0de">nihaoa</div>
+            <div class="col-md-1" style="background-color: #5cb85c">nihaoa</div>
+        </div>
+        <div class="row">
+            <div id="ymc1" class="col-md-4 col-md-offset-1 text-center on-put">
+                <img th:src="@{/img/1.png}" class="img-responsive img-thumbnail">
+                <h2 class="page-footer">Ymc1</h2>
+            </div>
+            <div id="ymc2" class="col-md-4 col-md-offset-2 text-center on-put">
+                <img th:src="@{/img/1.png}" class="img-responsive img-thumbnail">
+                <h2 class="page-footer">Ymc2</h2>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="registerModalLabel">
+                        Login
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    在这里添加一些文本
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">提交更改</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    getWidth();
+    function getWidth() {
+        var width=document.getElementById("infoDropdown").offsetWidth;
+        console.log(width);
+        $(".dropdown-menu").css("min-width",width);
+    }
+    $("#ymc1").click(function () {
+        document.location.href="bootstrap";
+    })
+</script>
+</html>

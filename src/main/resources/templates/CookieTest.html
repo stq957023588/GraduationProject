@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="button" value="SET COOKIE" id="SET">
+    <input type="button" value="GET COOKIE" id="GET">
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript">
+    $("#SET").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"cookieTestCtrl",
+            dataType:"text",
+            success:function (data) {
+                console.log("success");
+            },
+            error:function () {
+                console.log("error");
+            }
+        })
+    })
+    $("#GET").click(function () {
+        var cookie=document.cookie;
+        console.log(cookie);
+    })
+
+</script>
+</html>
