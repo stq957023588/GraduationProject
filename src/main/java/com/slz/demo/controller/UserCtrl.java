@@ -6,6 +6,7 @@ import com.slz.demo.pojo.User;
 import com.slz.demo.service.StrategySerImp;
 import com.slz.demo.service.UserConcernSerImp;
 import com.slz.demo.service.UserSerImp;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
-
+@Slf4j
 @RestController
 public class UserCtrl {
     @Autowired
@@ -44,6 +45,7 @@ public class UserCtrl {
         user.setProblem(userParam.getProblem());
         user.setAnswer(userParam.getAnswer());
         userSer.sava(user);
+        log.info("账号{}保存密保问题",user.getAccount());
         return message;
     }
 

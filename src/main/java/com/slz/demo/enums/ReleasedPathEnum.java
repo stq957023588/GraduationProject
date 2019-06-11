@@ -39,7 +39,7 @@ public enum ReleasedPathEnum {
 //    searchStrategies55("","/searchStrategies"),
 //    searchStrategies55("","/searchStrategies"),
     wechatTest("","/wechatTest"),
-
+    redisTest1("","/redisTest1"),
 
     //test
 //    personalPage("",""),

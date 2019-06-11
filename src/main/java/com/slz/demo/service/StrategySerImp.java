@@ -5,6 +5,7 @@ import com.slz.demo.dao.StrategyDao;
 import com.slz.demo.enums.OperationEnum;
 import com.slz.demo.pojo.Strategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -48,6 +49,7 @@ public class StrategySerImp implements StrategySer {
     }
 
     @Override
+    @Cacheable(cacheNames = "strategy",key = "#id")
     public Strategy findById(String id) {
         return strategiesDao.findById(id).orElse(null);
     }
@@ -58,6 +60,7 @@ public class StrategySerImp implements StrategySer {
     }
 
     @Override
+    @Cacheable(cacheNames = "strategies",key = "#account")
     public List<Strategy> findByAccount(String account) {
         return strategiesDao.findByAccountOrderByPublishTimeDesc(account);
     }

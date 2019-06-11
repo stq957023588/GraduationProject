@@ -5,14 +5,14 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
 @Entity
 @ConfigurationProperties(prefix = "pojo.user")
 @Table(name = "users")
-public class User {
-
+public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

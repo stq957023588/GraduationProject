@@ -10,7 +10,7 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext configurableApplicationContext=SpringApplication.run(DemoApplication.class, args);
-//		WebSocketTest.setApplicationContext(configurableApplicationContext);
+		WebSocketTest.setApplicationContext(configurableApplicationContext);
 	}
 
 }

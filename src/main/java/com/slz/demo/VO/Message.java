@@ -2,11 +2,12 @@ package com.slz.demo.VO;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-public class Message<T> {
+public class Message<T> implements Serializable{
     private String className;
     private String methodName;
     private T data;

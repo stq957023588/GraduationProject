@@ -8,12 +8,13 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
 @Entity
 @Table(name = "chat")
-public class Chat {
+public class Chat implements Serializable {
     @Id
     private String id;
     private String fromAccount;

@@ -1,6 +1,7 @@
 package normalTest;
 
 import com.alibaba.fastjson.JSON;
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
@@ -15,8 +16,10 @@ public class test1 {
     public static void main(String [] args) throws IOException {
         test4();
     }
+    @Test
+    public void redisAllKey(){
 
-
+    }
 
     public static void test(){
     }

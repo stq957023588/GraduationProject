@@ -5,6 +5,7 @@ import com.slz.demo.enums.PrefixEnum;
 import com.slz.demo.pojo.City;
 import com.slz.demo.service.CitySerImp;
 import com.slz.demo.utils.Tools;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
-
+@Slf4j
 @RestController
 public class CityCtrl {
 
@@ -27,9 +28,12 @@ public class CityCtrl {
         Message message=new Message();
         city.setId(Tools.getId(PrefixEnum.CityPrefix.getMessage()));
         ser.save(city);
+        log.info("添加城市{}",city.getCity());
         try {
             ser.databaseToFile();
+            log.info("数据库数据转json文件成功");
         } catch (IOException e) {
+            log.error("数据库城市数据转json文件出错");
             e.printStackTrace();
         }
         return message;
